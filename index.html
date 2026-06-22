@@ -10,78 +10,48 @@
 :root{
   --win-gray:#d4d0c8;
   --win-dark:#808080;
-  --win-darker:#404040;
+  --win-darker:#2a2a2a;
   --win-white:#ffffff;
   --win-blue:#000080;
   --win-blue2:#1084d0;
   --win-teal:#008080;
-  --win-black:#000000;
+  --win-black:#111111;
   --win-face:#d4d0c8;
   --shadow-out:inset -1px -1px #404040,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf;
   --shadow-in:inset 1px 1px #404040,inset -1px -1px #fff,inset 2px 2px #808080,inset -2px -2px #dfdfdf;
+  --body-font:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --mono-font:'Courier New',Courier,monospace;
 }
 
 html{scroll-behavior:smooth}
 body{
-  font-family:'Courier New',Courier,monospace;
+  font-family:var(--body-font);
   background:var(--win-teal);
   color:var(--win-black);
   line-height:1.5;
   overflow-x:hidden;
 }
 
-/* ── BOOT SCREEN ── */
-#boot{
-  position:fixed;inset:0;z-index:9999;
-  background:#000;
-  display:flex;align-items:center;justify-content:center;
-  transition:opacity .6s ease;
-}
-#boot.fade-out{opacity:0;pointer-events:none}
-#boot-bios{
-  color:#aaa;font-family:'Courier New',monospace;font-size:13px;
-  line-height:1.8;width:600px;max-width:90vw;
-  padding:0 20px;
-}
-#boot-bios .bios-bright{color:#fff}
-#boot-win{
-  display:none;flex-direction:column;align-items:center;gap:24px;
-  color:#fff;text-align:center;
-}
-#boot-win-logo{
-  font-size:clamp(22px,5vw,36px);font-weight:700;letter-spacing:1px;
-  font-family:'Courier New',monospace;
-}
-#boot-win-sub{font-size:13px;color:#aaa;letter-spacing:4px;text-transform:uppercase}
-#boot-bar-track{
-  width:280px;height:20px;
-  border:2px solid #666;
-  background:#111;
-  overflow:hidden;
-}
-#boot-bar-fill{
-  height:100%;width:0%;
-  background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
-  transition:width .08s linear;
-}
-#boot-status{font-size:11px;color:#888;letter-spacing:2px}
-#boot-skip{
-  position:fixed;bottom:20px;right:20px;
-  font-family:'Courier New',monospace;font-size:11px;
-  color:#444;cursor:pointer;
-}
-#boot-skip:hover{color:#888}
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .5s ease,transform .5s ease}
+.reveal.revealed{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
 
-/* ── UTILITIES ── */
+/* ── WIN CHROME (monospace stays retro) ── */
+.win-titlebar,.win-btn,.nav,.nav-logo,.statusbar,.hero-prompt,
+.section-title-bar,.step-num,.stat-label,.biz-tagline,
+.form-label,.form-input,.form-textarea,#boot,#boot *{
+  font-family:var(--mono-font);
+}
+
 .win-btn{
-  background:var(--win-face);border:none;
-  box-shadow:var(--shadow-out);
-  padding:5px 18px;
-  font-family:inherit;font-size:13px;cursor:pointer;
-  min-width:80px;white-space:nowrap;
+  background:var(--win-face);border:none;box-shadow:var(--shadow-out);
+  padding:5px 18px;font-size:13px;cursor:pointer;min-width:80px;white-space:nowrap;
   transition:transform .1s;
 }
-.win-btn:hover{filter:brightness(1.04)}
+.win-btn:hover{filter:brightness(.96)}
 .win-btn:active{box-shadow:var(--shadow-in);transform:translateY(1px)}
 .win-btn.primary{background:var(--win-blue);color:#fff}
 
@@ -92,93 +62,76 @@ body{
 }
 .win-titlebar .tb-btns{margin-left:auto;display:flex;gap:2px}
 .win-titlebar .tb-btns span{
-  width:16px;height:14px;background:var(--win-face);
-  box-shadow:var(--shadow-out);font-size:9px;
-  display:flex;align-items:center;justify-content:center;color:#000;
+  width:16px;height:14px;background:var(--win-face);box-shadow:var(--shadow-out);
+  font-size:9px;display:flex;align-items:center;justify-content:center;color:#000;
 }
-
-/* ── SCROLL REVEAL ── */
-.reveal{
-  opacity:0;transform:translateY(24px);
-  transition:opacity .55s ease,transform .55s ease;
-}
-.reveal.revealed{opacity:1;transform:none}
-.reveal-delay-1{transition-delay:.1s}
-.reveal-delay-2{transition-delay:.2s}
-.reveal-delay-3{transition-delay:.3s}
 
 /* ── NAV ── */
 .nav{
-  position:sticky;top:0;z-index:100;
-  background:var(--win-face);
-  box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,0 2px 6px rgba(0,0,0,.25);
-  padding:6px 20px;
-  display:flex;align-items:center;gap:8px;
+  position:sticky;top:0;z-index:100;background:var(--win-face);
+  box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,0 2px 6px rgba(0,0,0,.22);
+  padding:6px 20px;display:flex;align-items:center;gap:8px;
 }
 .nav-logo{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
 .nav-links{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
 .nav-links a{
-  font-size:12px;padding:3px 10px;
+  font-family:var(--mono-font);font-size:12px;padding:3px 10px;
   background:var(--win-face);box-shadow:var(--shadow-out);
-  color:var(--win-black);text-decoration:none;display:inline-block;
-  transition:filter .15s;
+  color:var(--win-black);text-decoration:none;display:inline-block;transition:filter .15s;
 }
-.nav-links a:hover{filter:brightness(.92)}
-.nav-links a:active,.nav-links a.active-section{box-shadow:var(--shadow-in)}
+.nav-links a:hover{filter:brightness(.9)}
+.nav-links a.active-section{box-shadow:var(--shadow-in)}
 .nav-links a.cta{background:var(--win-blue);color:#fff}
-.nav-links a.cta:hover{filter:brightness(1.2)}
+.nav-links a.cta:hover{filter:brightness(1.15)}
 
 /* ── HERO ── */
 .hero{
+  /* Pure sky gradient — hills SVG handles all the green */
   background:linear-gradient(180deg,
-    #0f4a8a 0%,#2876c2 22%,#5baee0 46%,#8ecfef 60%,
-    #7ec850 60%,#5aaa2a 80%,#3d8818 100%
+    #0d4a8c 0%,#2070be 18%,#4ea0da 42%,#7dc0ee 65%,#a8d8f5 85%,#c5e8fc 100%
   );
   min-height:92vh;display:flex;align-items:center;justify-content:center;
   padding:60px 20px 80px;position:relative;overflow:hidden;
 }
 .hero-hills{
-  position:absolute;bottom:0;left:0;right:0;height:46%;pointer-events:none;
+  position:absolute;bottom:0;left:0;right:0;
+  height:52%;        /* taller — covers the lower gradient */
+  pointer-events:none;
 }
 .hero-hills svg{width:100%;height:100%;display:block}
-.cloud{
-  position:absolute;background:#fff;border-radius:50px;pointer-events:none;
-  animation:drift linear infinite;
-}
-.cloud::before,.cloud::after{
-  content:'';position:absolute;background:#fff;border-radius:50%;
-}
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(120vw)}}
+
+/* clouds */
+.cloud{position:absolute;pointer-events:none;animation:drift linear infinite}
+@keyframes drift{from{transform:translateX(-20vw)}to{transform:translateX(120vw)}}
+.cloud-body{background:#fff;border-radius:50px;position:relative}
+.cloud-puff{position:absolute;background:#fff;border-radius:50%;top:0;transform:translateY(-50%)}
+
 .hero-window{
   background:var(--win-face);box-shadow:var(--shadow-out);
   width:100%;max-width:700px;position:relative;z-index:1;
-  animation:windowOpen .4s ease 3.8s both;
+  animation:windowOpen .35s ease 3.6s both;
 }
-@keyframes windowOpen{
-  from{opacity:0;transform:scale(.94)}
-  to{opacity:1;transform:scale(1)}
-}
+@keyframes windowOpen{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+
 .hero-body{padding:28px 34px 32px}
 .hero-prompt{
-  color:var(--win-teal);font-size:13px;margin-bottom:12px;font-weight:700;
-  min-height:20px;
+  color:var(--win-teal);font-size:13px;margin-bottom:12px;font-weight:700;min-height:20px;
 }
 .cursor{animation:blink .7s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .hero-heading{
-  font-size:clamp(22px,4.5vw,42px);font-weight:700;
-  line-height:1.12;margin-bottom:18px;color:var(--win-black);
+  font-family:var(--body-font);
+  font-size:clamp(22px,4.5vw,42px);font-weight:800;
+  line-height:1.12;margin-bottom:18px;color:#0a0a0a;
 }
 .hero-sub{
-  font-size:14px;color:var(--win-darker);
-  margin-bottom:28px;max-width:500px;line-height:1.75;
+  font-size:16px;color:#333;margin-bottom:28px;max-width:500px;line-height:1.75;
 }
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
 .hero-btns .win-btn{padding:7px 22px;font-size:14px}
 .statusbar{
-  background:var(--win-face);border-top:1px solid #808080;
-  padding:3px 10px;font-size:11px;color:var(--win-darker);
-  display:flex;gap:10px;
+  background:var(--win-face);border-top:1px solid #999;
+  padding:3px 10px;font-size:11px;color:#444;display:flex;gap:10px;
 }
 .statusbar-cell{box-shadow:var(--shadow-in);padding:1px 6px}
 
@@ -193,29 +146,15 @@ section{padding:72px 20px}
 
 /* ── STATS ── */
 #stats{background:var(--win-face);padding:28px 20px}
-.stats-row{
-  max-width:980px;margin:0 auto;
-  display:flex;flex-wrap:wrap;justify-content:center;gap:2px;
-}
-.stat-cell{
-  flex:1;min-width:160px;text-align:center;
-  padding:16px 24px;
-  box-shadow:var(--shadow-out);
-  background:var(--win-face);
-}
-.stat-num{font-size:32px;font-weight:700;color:var(--win-blue);line-height:1}
-.stat-label{font-size:11px;color:var(--win-darker);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.stats-row{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:center;gap:2px}
+.stat-cell{flex:1;min-width:150px;text-align:center;padding:16px 24px;box-shadow:var(--shadow-out);background:var(--win-face)}
+.stat-num{font-family:var(--mono-font);font-size:34px;font-weight:700;color:var(--win-blue);line-height:1}
+.stat-label{font-size:11px;color:#555;margin-top:5px;text-transform:uppercase;letter-spacing:1px}
 
-/* ── HOW IT WORKS ── */
+/* ── PROCESS ── */
 #process{background:var(--win-gray)}
-.process-steps{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:20px;
-}
-.process-step{
-  background:var(--win-face);box-shadow:var(--shadow-out);
-  padding:2px;
-}
+.process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.process-step{background:var(--win-face);box-shadow:var(--shadow-out);padding:2px}
 .process-step-inner{padding:20px 18px}
 .step-num{
   display:inline-block;
@@ -223,123 +162,126 @@ section{padding:72px 20px}
   color:#fff;font-size:11px;font-weight:700;padding:2px 8px;
   margin-bottom:12px;letter-spacing:1px;
 }
-.step-icon{font-size:26px;margin-bottom:8px}
-.step-title{font-size:15px;font-weight:700;margin-bottom:6px}
-.step-desc{font-size:12px;color:var(--win-darker);line-height:1.7}
-.process-arrow{
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;color:var(--win-dark);padding-top:40px;
-}
+.step-icon{font-size:28px;margin-bottom:8px}
+.step-title{font-size:16px;font-weight:700;margin-bottom:7px;color:#0a0a0a}
+.step-desc{font-size:14px;color:#333;line-height:1.7}
 
 /* ── WORK ── */
 #work{background:var(--win-face)}
-.projects-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;
-}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
 .project-card{
   background:var(--win-face);box-shadow:var(--shadow-out);
-  transition:transform .2s ease,box-shadow .2s ease;
-  cursor:default;
+  transition:transform .2s,box-shadow .2s;cursor:default;
 }
 .project-card:hover{
   transform:translateY(-3px);
-  box-shadow:
-    inset -1px -1px #404040,inset 1px 1px #fff,
-    inset -2px -2px #808080,inset 2px 2px #dfdfdf,
-    0 8px 20px rgba(0,0,0,.18);
+  box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf,0 8px 20px rgba(0,0,0,.15);
 }
 .project-card-img{
-  width:100%;aspect-ratio:16/9;background:#b0aca4;
-  box-shadow:var(--shadow-in);
+  width:100%;aspect-ratio:16/9;background:#b8b4aa;box-shadow:var(--shadow-in);
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;color:var(--win-darker);overflow:hidden;
+  font-size:13px;color:#555;overflow:hidden;
 }
 .project-card-img img{width:100%;height:100%;object-fit:cover;display:block}
 .project-card-body{padding:14px 16px 18px}
-.project-card-title{font-size:15px;font-weight:700;margin-bottom:5px}
-.project-card-desc{font-size:12px;color:var(--win-darker);line-height:1.65;margin-bottom:12px}
-.project-card-tag{
-  display:inline-block;padding:1px 8px;
-  background:var(--win-teal);color:#fff;font-size:11px;
-}
+.project-card-title{font-size:16px;font-weight:700;margin-bottom:6px;color:#0a0a0a}
+.project-card-desc{font-size:14px;color:#333;line-height:1.65;margin-bottom:12px}
+.project-card-tag{display:inline-block;padding:2px 8px;background:var(--win-teal);color:#fff;font-size:12px;font-family:var(--mono-font)}
 
 /* ── SERVICES ── */
 #services{background:var(--win-teal)}
-.services-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;
-}
-.service-card{
-  background:var(--win-face);box-shadow:var(--shadow-out);padding:2px;
-  transition:transform .2s ease;
-}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.service-card{background:var(--win-face);box-shadow:var(--shadow-out);padding:2px;transition:transform .2s}
 .service-card:hover{transform:translateY(-2px)}
 .service-card-inner{padding:18px 16px}
 .service-icon{font-size:30px;margin-bottom:10px}
-.service-name{font-size:14px;font-weight:700;margin-bottom:7px}
-.service-desc{font-size:12px;color:var(--win-darker);line-height:1.75}
+.service-name{font-size:15px;font-weight:700;margin-bottom:7px;color:#0a0a0a}
+.service-desc{font-size:14px;color:#333;line-height:1.7}
 
 /* ── TESTIMONIALS ── */
 #testimonials{background:var(--win-gray)}
-.testimonials-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;
-}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
 .testimonial-card{background:var(--win-face);box-shadow:var(--shadow-out);padding:2px}
 .testimonial-card-inner{padding:18px 16px}
 .testimonial-stars{color:#c9a227;font-size:15px;margin-bottom:12px;letter-spacing:2px}
 .testimonial-quote{
-  font-size:13px;line-height:1.75;color:var(--win-darker);margin-bottom:16px;
+  font-size:14px;line-height:1.75;color:#333;margin-bottom:16px;
   border-left:3px solid var(--win-teal);padding-left:12px;font-style:italic;
 }
-.testimonial-name{font-size:13px;font-weight:700}
-.testimonial-role{font-size:11px;color:var(--win-dark)}
+.testimonial-name{font-size:14px;font-weight:700;color:#0a0a0a}
+.testimonial-role{font-size:12px;color:#666;margin-top:2px}
 
 /* ── CTA BAND ── */
-#cta-band{
-  background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
-  padding:40px 20px;text-align:center;
-}
-.cta-band-inner{max-width:600px;margin:0 auto}
-.cta-band-heading{
-  font-size:clamp(18px,3vw,28px);font-weight:700;color:#fff;margin-bottom:12px;
-}
-.cta-band-sub{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:24px;line-height:1.7}
+#cta-band{background:linear-gradient(to right,var(--win-blue),var(--win-blue2));padding:44px 20px;text-align:center}
+.cta-band-inner{max-width:620px;margin:0 auto}
+.cta-band-heading{font-size:clamp(18px,3vw,30px);font-weight:800;color:#fff;margin-bottom:12px}
+.cta-band-sub{font-size:15px;color:rgba(255,255,255,.8);margin-bottom:26px;line-height:1.7}
 .cta-band-btn{
   background:var(--win-face);border:none;box-shadow:var(--shadow-out);
-  padding:9px 32px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
-  transition:filter .15s;
+  padding:9px 32px;font-family:var(--mono-font);font-size:14px;font-weight:700;cursor:pointer;
 }
 .cta-band-btn:hover{filter:brightness(.95)}
 .cta-band-btn:active{box-shadow:var(--shadow-in)}
 
-/* ── CONTACT ── */
+/* ── CONTACT LAYOUT ── */
 #contact{background:var(--win-teal)}
-.contact-window{
-  max-width:580px;margin:0 auto;
-  background:var(--win-face);box-shadow:var(--shadow-out);
+.contact-layout{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;
+  max-width:980px;margin:0 auto;
 }
-.contact-body{padding:22px 26px 30px}
-.form-group{margin-bottom:14px}
-.form-label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
+
+/* ── BUSINESS CARD ── */
+.biz-card{background:var(--win-face);box-shadow:var(--shadow-out)}
+.biz-card-body{padding:16px 18px 20px}
+.biz-card-header{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.biz-monitor{
+  flex-shrink:0;width:64px;height:56px;
+  background:#c8c4bc;box-shadow:var(--shadow-in);
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;
+}
+.biz-name{font-family:var(--mono-font);font-size:20px;font-weight:700;color:#0a0a0a;margin-bottom:2px}
+.biz-title{font-family:var(--mono-font);font-size:13px;color:var(--win-teal);font-weight:700;margin-bottom:6px}
+.biz-company{font-family:var(--mono-font);font-size:13px;font-weight:700;letter-spacing:1px;color:#0a0a0a}
+.biz-tagline{font-size:12px;color:#555;margin-top:2px}
+.biz-checks{
+  display:flex;gap:18px;margin-bottom:14px;
+  font-family:var(--mono-font);font-size:13px;color:#0a0a0a;
+  padding:8px 10px;background:#bab6ae;box-shadow:var(--shadow-in);
+}
+.biz-actions{display:flex;flex-direction:column;gap:6px}
+.biz-action-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:7px 12px;background:var(--win-face);
+  box-shadow:var(--shadow-out);cursor:pointer;
+  font-family:var(--mono-font);font-size:13px;color:#0a0a0a;
+  text-decoration:none;border:none;width:100%;text-align:left;
+  transition:filter .15s;
+}
+.biz-action-btn:hover{filter:brightness(.93)}
+.biz-action-btn:active{box-shadow:var(--shadow-in)}
+.biz-action-icon{font-size:15px}
+
+/* ── CONTACT FORM ── */
+.contact-window{background:var(--win-face);box-shadow:var(--shadow-out)}
+.contact-body{padding:16px 18px 20px}
+.contact-intro{font-size:13px;color:#444;margin-bottom:16px;font-family:var(--mono-font)}
+.form-group{margin-bottom:13px}
+.form-label{display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#0a0a0a}
 .form-input,.form-textarea{
-  width:100%;font-family:inherit;font-size:13px;
-  background:#fff;border:none;box-shadow:var(--shadow-in);
-  padding:7px 9px;color:var(--win-black);
+  width:100%;font-size:13px;background:#fff;border:none;
+  box-shadow:var(--shadow-in);padding:7px 9px;color:#0a0a0a;
 }
-.form-input:focus,.form-textarea:focus{
-  outline:2px solid var(--win-blue);outline-offset:-1px;
-}
-.form-textarea{height:110px;resize:vertical}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-submit{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-.contact-note{font-size:12px;color:var(--win-darker)}
-.contact-note a{color:var(--win-blue)}
+.form-input:focus,.form-textarea:focus{outline:2px solid var(--win-blue);outline-offset:-1px}
+.form-textarea{height:90px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-submit{display:flex;justify-content:flex-end;margin-top:8px}
 
 /* ── FOOTER ── */
 .footer{
   background:var(--win-face);
   box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf;
-  padding:14px 20px;
-  font-size:12px;color:var(--win-darker);
+  padding:14px 20px;font-family:var(--mono-font);font-size:12px;color:#555;
   display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;
 }
 .footer a{color:var(--win-blue);text-decoration:underline}
@@ -351,51 +293,35 @@ section{padding:72px 20px}
 ::-webkit-scrollbar-button{background:var(--win-face);box-shadow:var(--shadow-out);height:16px}
 
 /* ── MOBILE ── */
-@media(max-width:600px){
+@media(max-width:680px){
   .nav-links a:not(.cta){display:none}
   .hero-body{padding:20px 18px 24px}
   .form-row{grid-template-columns:1fr}
   .hero-btns .win-btn{width:100%;text-align:center}
-  .process-arrow{display:none}
   .stat-cell{min-width:130px}
-  .form-submit{flex-direction:column;gap:10px;align-items:flex-start}
+  .contact-layout{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
 <!-- ── BOOT SCREEN ── -->
-<div id="boot">
-  <div id="boot-bios"></div>
-  <div id="boot-win">
-    <div id="boot-win-logo">🖥️ Council Computing</div>
-    <div id="boot-win-sub">Custom Software · Built Your Way</div>
-    <div id="boot-bar-track"><div id="boot-bar-fill"></div></div>
-    <div id="boot-status">Loading...</div>
+<div id="boot" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease">
+  <div id="boot-bios" style="color:#aaa;font-family:'Courier New',monospace;font-size:13px;line-height:1.9;width:580px;max-width:90vw;padding:0 20px"></div>
+  <div id="boot-win" style="display:none;flex-direction:column;align-items:center;gap:20px;color:#fff;text-align:center;font-family:'Courier New',monospace">
+    <div style="font-size:clamp(20px,4vw,32px);font-weight:700">🖥️ Council Computing</div>
+    <div style="font-size:12px;color:#888;letter-spacing:3px;text-transform:uppercase">Custom Software · Built Your Way</div>
+    <div style="width:260px;height:18px;border:2px solid #444;background:#111;overflow:hidden">
+      <div id="boot-bar-fill" style="height:100%;width:0%;background:linear-gradient(to right,#000080,#1084d0);transition:width .05s linear"></div>
+    </div>
+    <div id="boot-status" style="font-size:11px;color:#555;letter-spacing:2px">Loading...</div>
   </div>
-  <div id="boot-skip">[ click or press any key to skip ]</div>
+  <div id="boot-skip" style="position:fixed;bottom:20px;right:20px;font-family:'Courier New',monospace;font-size:11px;color:#333;cursor:pointer" onmouseover="this.style.color='#666'" onmouseout="this.style.color='#333'">[ click or press any key to skip ]</div>
 </div>
 
-<style>
-#boot{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease}
-#boot.fade-out{opacity:0;pointer-events:none}
-#boot-bios{color:#aaa;font-family:'Courier New',monospace;font-size:13px;line-height:1.9;width:580px;max-width:90vw;padding:0 20px}
-#boot-win{display:none;flex-direction:column;align-items:center;gap:20px;color:#fff;text-align:center;font-family:'Courier New',monospace}
-#boot-win-logo{font-size:clamp(20px,4vw,32px);font-weight:700;letter-spacing:1px}
-#boot-win-sub{font-size:12px;color:#888;letter-spacing:3px;text-transform:uppercase}
-#boot-bar-track{width:260px;height:18px;border:2px solid #444;background:#111;overflow:hidden}
-#boot-bar-fill{height:100%;width:0%;background:linear-gradient(to right,#000080,#1084d0);transition:width .05s linear}
-#boot-status{font-size:11px;color:#555;letter-spacing:2px}
-#boot-skip{position:fixed;bottom:20px;right:20px;font-family:'Courier New',monospace;font-size:11px;color:#333;cursor:pointer}
-#boot-skip:hover{color:#666}
-</style>
-
 <!-- ── NAV ── -->
-<nav class="nav" id="main-nav">
-  <div class="nav-logo">
-    <span>🖥️</span>
-    <span>Council Computing</span>
-  </div>
+<nav class="nav">
+  <div class="nav-logo"><span>🖥️</span><span>Council Computing</span></div>
   <div class="nav-links">
     <a href="#work" data-section="work">Work</a>
     <a href="#services" data-section="services">Services</a>
@@ -407,31 +333,41 @@ section{padding:72px 20px}
 <!-- ── HERO ── -->
 <section class="hero" id="hero">
   <!-- clouds -->
-  <div class="cloud" style="width:90px;height:30px;top:12%;left:-10%;animation-duration:90s;animation-delay:0s;opacity:.8">
-    <span style="position:absolute;width:50px;height:40px;background:#fff;border-radius:50%;top:-20px;left:15px"></span>
-    <span style="position:absolute;width:35px;height:30px;background:#fff;border-radius:50%;top:-14px;left:40px"></span>
+  <div class="cloud" style="top:10%;animation-duration:95s;animation-delay:0s;opacity:.85">
+    <div class="cloud-body" style="width:110px;height:32px">
+      <div class="cloud-puff" style="width:55px;height:55px;left:20px"></div>
+      <div class="cloud-puff" style="width:40px;height:40px;left:55px"></div>
+    </div>
   </div>
-  <div class="cloud" style="width:70px;height:24px;top:20%;left:-10%;animation-duration:130s;animation-delay:30s;opacity:.65">
-    <span style="position:absolute;width:40px;height:35px;background:#fff;border-radius:50%;top:-18px;left:10px"></span>
+  <div class="cloud" style="top:22%;animation-duration:140s;animation-delay:38s;opacity:.65">
+    <div class="cloud-body" style="width:80px;height:26px">
+      <div class="cloud-puff" style="width:42px;height:42px;left:15px"></div>
+    </div>
   </div>
-  <div class="cloud" style="width:110px;height:36px;top:8%;left:-10%;animation-duration:110s;animation-delay:55s;opacity:.75">
-    <span style="position:absolute;width:60px;height:44px;background:#fff;border-radius:50%;top:-22px;left:20px"></span>
-    <span style="position:absolute;width:40px;height:32px;background:#fff;border-radius:50%;top:-14px;left:60px"></span>
+  <div class="cloud" style="top:6%;animation-duration:115s;animation-delay:62s;opacity:.75">
+    <div class="cloud-body" style="width:130px;height:38px">
+      <div class="cloud-puff" style="width:65px;height:65px;left:25px"></div>
+      <div class="cloud-puff" style="width:45px;height:45px;left:75px"></div>
+    </div>
   </div>
 
-  <!-- rolling hills -->
+  <!-- rolling hills — SVG fills all the green, no hard-stop in CSS -->
   <div class="hero-hills" aria-hidden="true">
-    <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,200 L0,110 C80,75 180,55 300,85 C420,115 500,140 640,98 C780,56 880,28 1020,68 C1160,108 1260,132 1370,100 C1410,88 1430,80 1440,78 L1440,200 Z" fill="#3a7a16"/>
-      <path d="M0,200 L0,148 C110,118 230,106 370,130 C510,154 590,164 740,138 C890,112 970,88 1110,114 C1250,140 1340,158 1440,144 L1440,200 Z" fill="#4e9820" opacity=".9"/>
-      <path d="M0,200 L0,174 C130,158 260,153 400,166 C540,179 640,183 780,170 C920,157 1020,146 1160,162 C1300,178 1370,182 1440,175 L1440,200 Z" fill="#62b82a" opacity=".85"/>
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- solid ground floor so no sky bleeds through -->
+      <rect x="0" y="220" width="1440" height="100" fill="#336e10"/>
+      <!-- back hill (darkest) -->
+      <path d="M0,320 L0,160 C100,120 220,95 380,125 C540,155 640,185 800,145 C960,105 1060,70 1200,105 C1280,122 1360,138 1440,130 L1440,320 Z" fill="#3a7e15"/>
+      <!-- mid hill -->
+      <path d="M0,320 L0,210 C120,178 250,162 410,185 C570,208 660,222 820,196 C980,170 1080,146 1220,172 C1320,190 1380,200 1440,194 L1440,320 Z" fill="#4e9a1e"/>
+      <!-- front hill (brightest) -->
+      <path d="M0,320 L0,262 C140,244 280,238 440,252 C600,266 700,274 860,260 C1020,246 1120,234 1280,252 C1360,261 1400,267 1440,264 L1440,320 Z" fill="#65bc2e"/>
     </svg>
   </div>
 
   <div class="hero-window">
     <div class="win-titlebar">
-      <span>🖥️</span>
-      <span>CouncilComputing.exe</span>
+      <span>🖥️</span><span>CouncilComputing.exe</span>
       <div class="tb-btns"><span>─</span><span>□</span><span>✕</span></div>
     </div>
     <div class="hero-body">
@@ -454,31 +390,17 @@ section{padding:72px 20px}
 <!-- ── STATS ── -->
 <div id="stats">
   <div class="stats-row">
-    <div class="stat-cell reveal">
-      <div class="stat-num" data-count="5">0</div>
-      <div class="stat-label">Projects Delivered</div>
-    </div>
-    <div class="stat-cell reveal reveal-delay-1">
-      <div class="stat-num" data-count="4">0</div>
-      <div class="stat-label">Happy Clients</div>
-    </div>
-    <div class="stat-cell reveal reveal-delay-2">
-      <div class="stat-num" data-count="100">0</div>
-      <div class="stat-label">% Custom-Built</div>
-    </div>
-    <div class="stat-cell reveal reveal-delay-3">
-      <div class="stat-num">1</div>
-      <div class="stat-label">Business Day Response</div>
-    </div>
+    <div class="stat-cell reveal"><div class="stat-num" data-count="5">0</div><div class="stat-label">Projects Delivered</div></div>
+    <div class="stat-cell reveal reveal-delay-1"><div class="stat-num" data-count="4">0</div><div class="stat-label">Happy Clients</div></div>
+    <div class="stat-cell reveal reveal-delay-2"><div class="stat-num" data-count="100">0</div><div class="stat-label">% Custom-Built</div></div>
+    <div class="stat-cell reveal reveal-delay-3"><div class="stat-num">1</div><div class="stat-label">Business Day Response</div></div>
   </div>
 </div>
 
 <!-- ── HOW IT WORKS ── -->
 <section id="process">
   <div class="section-inner">
-    <div class="section-title-bar reveal">
-      <span>📋</span><span>How It Works</span>
-    </div>
+    <div class="section-title-bar reveal"><span>📋</span><span>How It Works</span></div>
     <div class="process-steps">
       <div class="process-step reveal">
         <div class="process-step-inner">
@@ -493,7 +415,7 @@ section{padding:72px 20px}
           <div class="step-num">STEP 02</div>
           <div class="step-icon">🔨</div>
           <div class="step-title">We scope &amp; build it</div>
-          <div class="step-desc">We scope the project, agree on a price, and get to work. You stay in the loop — no surprises, no scope creep, no disappearing for three months.</div>
+          <div class="step-desc">We scope the project, agree on a price, and get to work. You stay in the loop — no surprises, no scope creep, no disappearing for months.</div>
         </div>
       </div>
       <div class="process-step reveal reveal-delay-2">
@@ -511,11 +433,8 @@ section{padding:72px 20px}
 <!-- ── WORK ── -->
 <section id="work">
   <div class="section-inner">
-    <div class="section-title-bar reveal">
-      <span>💼</span><span>Selected Work</span>
-    </div>
+    <div class="section-title-bar reveal"><span>💼</span><span>Selected Work</span></div>
     <div class="projects-grid">
-
       <div class="project-card reveal">
         <div class="project-card-img">[ screenshot coming soon ]</div>
         <div class="project-card-body">
@@ -524,7 +443,6 @@ section{padding:72px 20px}
           <span class="project-card-tag">Web App</span>
         </div>
       </div>
-
       <div class="project-card reveal reveal-delay-1">
         <div class="project-card-img">[ screenshot ]</div>
         <div class="project-card-body">
@@ -533,7 +451,6 @@ section{padding:72px 20px}
           <span class="project-card-tag">[ Type ]</span>
         </div>
       </div>
-
       <div class="project-card reveal reveal-delay-2">
         <div class="project-card-img">[ screenshot ]</div>
         <div class="project-card-body">
@@ -542,7 +459,6 @@ section{padding:72px 20px}
           <span class="project-card-tag">[ Type ]</span>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -550,9 +466,7 @@ section{padding:72px 20px}
 <!-- ── SERVICES ── -->
 <section id="services">
   <div class="section-inner">
-    <div class="section-title-bar reveal">
-      <span>⚙️</span><span>What We Build</span>
-    </div>
+    <div class="section-title-bar reveal"><span>⚙️</span><span>What We Build</span></div>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-card-inner">
@@ -564,21 +478,21 @@ section{padding:72px 20px}
       <div class="service-card reveal reveal-delay-1">
         <div class="service-card-inner">
           <div class="service-icon">📊</div>
-          <div class="service-name">Internal Tools & Dashboards</div>
+          <div class="service-name">Internal Tools &amp; Dashboards</div>
           <div class="service-desc">Reporting tools and internal systems built for the way your team actually works — not the way some vendor assumes you work.</div>
         </div>
       </div>
       <div class="service-card reveal reveal-delay-2">
         <div class="service-card-inner">
           <div class="service-icon">🔗</div>
-          <div class="service-name">Integrations & Automation</div>
+          <div class="service-name">Integrations &amp; Automation</div>
           <div class="service-desc">Connect your existing tools, automate repetitive tasks, and stop copying data between systems by hand.</div>
         </div>
       </div>
       <div class="service-card reveal reveal-delay-3">
         <div class="service-card-inner">
           <div class="service-icon">📱</div>
-          <div class="service-name">Mobile & PWA</div>
+          <div class="service-name">Mobile &amp; PWA</div>
           <div class="service-desc">Lightweight mobile apps for teams in the field — built for real-world conditions, works on any device without an app store install.</div>
         </div>
       </div>
@@ -589,9 +503,7 @@ section{padding:72px 20px}
 <!-- ── TESTIMONIALS ── -->
 <section id="testimonials">
   <div class="section-inner">
-    <div class="section-title-bar reveal">
-      <span>★</span><span>What Clients Say</span>
-    </div>
+    <div class="section-title-bar reveal"><span>★</span><span>What Clients Say</span></div>
     <div class="testimonials-grid">
       <div class="testimonial-card reveal">
         <div class="testimonial-card-inner">
@@ -632,15 +544,49 @@ section{padding:72px 20px}
 
 <!-- ── CONTACT ── -->
 <section id="contact">
-  <div class="section-inner">
-    <div class="contact-window reveal">
+  <div class="contact-layout">
+
+    <!-- Business Card -->
+    <div class="biz-card reveal">
       <div class="win-titlebar">
-        <span>✉</span>
-        <span>RequestQuote.exe</span>
+        <span>🖥️</span><span>CouncilComputing.exe</span>
+        <div class="tb-btns"><span>─</span><span>□</span><span>✕</span></div>
+      </div>
+      <div class="biz-card-body">
+        <div class="biz-card-header">
+          <div class="biz-monitor">🖥️</div>
+          <div>
+            <div class="biz-name">Hayes McNeill</div>
+            <div class="biz-title">CEO &amp; Founder</div>
+            <div class="biz-company">COUNCIL COMPUTING</div>
+            <div class="biz-tagline">&gt; software design for companies_</div>
+          </div>
+        </div>
+        <div class="biz-checks">
+          <span>☑ Custom built</span>
+          <span>☑ Built your way</span>
+        </div>
+        <div class="biz-actions">
+          <a class="biz-action-btn" href="mailto:councilcomputing@gmail.com">
+            <span class="biz-action-icon">✉</span>
+            <span>councilcomputing@gmail.com</span>
+          </a>
+          <a class="biz-action-btn" href="tel:4056969330">
+            <span class="biz-action-icon">📞</span>
+            <span>(405) 696-9330</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote Form -->
+    <div class="contact-window reveal reveal-delay-1">
+      <div class="win-titlebar">
+        <span>✉</span><span>RequestQuote.exe</span>
         <div class="tb-btns"><span>─</span><span>□</span><span>✕</span></div>
       </div>
       <div class="contact-body">
-        <p style="font-size:13px;margin-bottom:20px;color:var(--win-darker)">&gt; Describe what you need built. We reply within 1 business day with a scoping question or a straight quote.</p>
+        <p class="contact-intro">&gt; Describe what you need built. We reply within 1 business day.</p>
         <form name="contact" netlify>
           <div class="form-row">
             <div class="form-group">
@@ -661,12 +607,12 @@ section{padding:72px 20px}
             <textarea class="form-textarea" id="fmsg" name="message" placeholder="Describe the problem you're trying to solve — plain English is fine." required></textarea>
           </div>
           <div class="form-submit">
-            <span class="contact-note">Or email: <a href="mailto:councilcomputing@gmail.com">councilcomputing@gmail.com</a></span>
             <button class="win-btn primary" type="submit">Send ✉</button>
           </div>
         </form>
       </div>
     </div>
+
   </div>
 </section>
 
@@ -680,145 +626,101 @@ section{padding:72px 20px}
 </footer>
 
 <script>
-/* ── BOOT SEQUENCE ── */
+/* ── BOOT ── */
 (function(){
-  const boot = document.getElementById('boot');
-  const biosEl = document.getElementById('boot-bios');
-  const winEl = document.getElementById('boot-win');
-  const barFill = document.getElementById('boot-bar-fill');
-  const statusEl = document.getElementById('boot-status');
-
-  const LINES = [
-    {t:'<span style="color:#fff;font-size:15px;font-weight:bold">Council Computing Systems BIOS v2.6</span>'},
-    {t:'Copyright (C) 2026 Council Computing, Inc.'},
-    {t:''},
-    {t:'CPU: Custom Silicon    3.0 GHz      OK'},
-    {t:'Memory Test: 640K                   OK'},
-    {t:'Detecting Primary HDD ...           OK'},
-    {t:'Detecting USB Controller ...        OK'},
-    {t:''},
-    {t:'<span style="color:#fff">Loading COUNCIL.SYS ...</span>'},
-    {t:'<span style="color:#fff">Starting Windows 98 ...</span>'},
+  const boot=document.getElementById('boot');
+  const biosEl=document.getElementById('boot-bios');
+  const winEl=document.getElementById('boot-win');
+  const barFill=document.getElementById('boot-bar-fill');
+  const statusEl=document.getElementById('boot-status');
+  const LINES=[
+    '<span style="color:#fff;font-size:15px;font-weight:bold">Council Computing Systems BIOS v2.6</span>',
+    'Copyright (C) 2026 Council Computing, Inc.',
+    '',
+    'CPU: Custom Silicon    3.0 GHz      OK',
+    'Memory Test: 640K                   OK',
+    'Detecting Primary HDD ...           OK',
+    'Detecting USB Controller ...        OK',
+    '',
+    '<span style="color:#fff">Loading COUNCIL.SYS ...</span>',
+    '<span style="color:#fff">Starting Windows 98 ...</span>',
   ];
-
-  let done = false;
+  let done=false;
   function finish(){
-    if(done) return;
-    done = true;
-    boot.classList.add('fade-out');
-    setTimeout(()=>{ boot.style.display='none'; startTypewriter(); }, 650);
+    if(done)return;done=true;
+    boot.style.opacity='0';boot.style.pointerEvents='none';
+    setTimeout(()=>{boot.style.display='none';startTypewriter();},650);
   }
-
-  document.addEventListener('keydown', finish);
-  document.getElementById('boot-skip').addEventListener('click', finish);
-  boot.addEventListener('click', finish);
-
-  let li = 0;
+  document.addEventListener('keydown',finish);
+  document.getElementById('boot-skip').addEventListener('click',finish);
+  boot.addEventListener('click',finish);
+  let li=0;
   function nextLine(){
-    if(li >= LINES.length){
-      setTimeout(showWin, 300);
-      return;
-    }
-    const d = document.createElement('div');
-    d.innerHTML = LINES[li].t;
-    biosEl.appendChild(d);
-    li++;
-    setTimeout(nextLine, li < 4 ? 60 : 120);
+    if(li>=LINES.length){setTimeout(showWin,300);return;}
+    const d=document.createElement('div');d.innerHTML=LINES[li];biosEl.appendChild(d);li++;
+    setTimeout(nextLine,li<4?60:110);
   }
-
   function showWin(){
-    biosEl.style.display = 'none';
-    winEl.style.display = 'flex';
-    let pct = 0;
-    const statuses = ['Loading drivers...','Initializing...','Starting services...','Almost ready...','Done.'];
-    let si = 0;
-    const bar = setInterval(()=>{
-      pct += 2 + Math.random()*3;
-      if(pct > 100) pct = 100;
-      barFill.style.width = pct+'%';
-      if(si < statuses.length && pct > si*(100/statuses.length)){
-        statusEl.textContent = statuses[si++];
-      }
-      if(pct >= 100){
-        clearInterval(bar);
-        setTimeout(finish, 400);
-      }
-    }, 50);
+    biosEl.style.display='none';winEl.style.display='flex';
+    let pct=0,si=0;
+    const statuses=['Loading drivers...','Initializing...','Starting services...','Almost ready...','Done.'];
+    const bar=setInterval(()=>{
+      pct+=2+Math.random()*3;if(pct>100)pct=100;
+      barFill.style.width=pct+'%';
+      if(si<statuses.length&&pct>si*(100/statuses.length))statusEl.textContent=statuses[si++];
+      if(pct>=100){clearInterval(bar);setTimeout(finish,400);}
+    },50);
   }
-
-  setTimeout(nextLine, 200);
+  setTimeout(nextLine,200);
 })();
 
 /* ── TYPEWRITER ── */
 function startTypewriter(){
-  const el = document.getElementById('hero-prompt');
-  const text = '> custom software, built your way';
-  el.innerHTML = '';
-  const cursor = document.createElement('span');
-  cursor.className = 'cursor';
-  cursor.textContent = '_';
-  el.appendChild(cursor);
-  let i = 0;
-  const t = setInterval(()=>{
-    if(i < text.length){
-      el.insertBefore(document.createTextNode(text[i]), cursor);
-      i++;
-    } else { clearInterval(t); }
-  }, 42);
+  const el=document.getElementById('hero-prompt');
+  const text='> custom software, built your way';
+  el.innerHTML='';
+  const cur=document.createElement('span');cur.className='cursor';cur.textContent='_';el.appendChild(cur);
+  let i=0;
+  const t=setInterval(()=>{
+    if(i<text.length){el.insertBefore(document.createTextNode(text[i]),cur);i++;}
+    else clearInterval(t);
+  },42);
 }
 
 /* ── SCROLL REVEAL ── */
-const revealObs = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('revealed'); });
-},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+const revObs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('revealed');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
 
-/* ── COUNTER ANIMATION ── */
-function animateCounter(el, target, duration=1200){
-  const start = performance.now();
-  const tick = (now)=>{
-    const progress = Math.min((now - start)/duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3);
-    el.textContent = Math.round(eased * target);
-    if(progress < 1) requestAnimationFrame(tick);
-    else el.textContent = target;
-  };
-  requestAnimationFrame(tick);
+/* ── COUNTERS ── */
+function animCount(el,target){
+  const start=performance.now();
+  (function tick(now){
+    const p=Math.min((now-start)/1200,1),ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(ease*target);
+    if(p<1)requestAnimationFrame(tick);else el.textContent=target;
+  })(start);
 }
-const counterObs = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const target = parseInt(e.target.dataset.count);
-      if(target) animateCounter(e.target, target);
-      counterObs.unobserve(e.target);
-    }
-  });
-},{threshold:0.5});
-document.querySelectorAll('.stat-num[data-count]').forEach(el=>counterObs.observe(el));
+const cntObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){const t=parseInt(e.target.dataset.count);if(t)animCount(e.target,t);cntObs.unobserve(e.target);}
+}),{threshold:0.5});
+document.querySelectorAll('.stat-num[data-count]').forEach(el=>cntObs.observe(el));
 
 /* ── ACTIVE NAV ── */
-const sections = document.querySelectorAll('section[id], div[id="stats"]');
-const navLinks = document.querySelectorAll('.nav-links a[data-section]');
-const sectionObs = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      navLinks.forEach(a=>a.classList.remove('active-section'));
-      const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-      if(link) link.classList.add('active-section');
-    }
-  });
-},{rootMargin:'-40% 0px -55% 0px'});
-sections.forEach(s=>sectionObs.observe(s));
+const secObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){
+    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active-section'));
+    const l=document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+    if(l)l.classList.add('active-section');
+  }
+}),{rootMargin:'-40% 0px -55% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>secObs.observe(s));
 
-/* ── STATUS BAR CLOCK ── */
-function updateClock(){
-  const now = new Date();
-  const h = now.getHours(), m = now.getMinutes().toString().padStart(2,'0');
-  const ampm = h >= 12 ? 'PM' : 'AM';
-  document.getElementById('sb-clock').textContent = `${h%12||12}:${m} ${ampm}`;
+/* ── CLOCK ── */
+function tick(){
+  const n=new Date(),h=n.getHours(),m=n.getMinutes().toString().padStart(2,'0'),ap=h>=12?'PM':'AM';
+  const el=document.getElementById('sb-clock');if(el)el.textContent=`${h%12||12}:${m} ${ap}`;
 }
-updateClock();
-setInterval(updateClock, 30000);
+tick();setInterval(tick,30000);
 </script>
 </body>
 </html>
