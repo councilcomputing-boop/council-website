@@ -27,276 +27,322 @@ body{
   background:var(--win-teal);
   color:var(--win-black);
   line-height:1.5;
+  overflow-x:hidden;
 }
+
+/* ── BOOT SCREEN ── */
+#boot{
+  position:fixed;inset:0;z-index:9999;
+  background:#000;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .6s ease;
+}
+#boot.fade-out{opacity:0;pointer-events:none}
+#boot-bios{
+  color:#aaa;font-family:'Courier New',monospace;font-size:13px;
+  line-height:1.8;width:600px;max-width:90vw;
+  padding:0 20px;
+}
+#boot-bios .bios-bright{color:#fff}
+#boot-win{
+  display:none;flex-direction:column;align-items:center;gap:24px;
+  color:#fff;text-align:center;
+}
+#boot-win-logo{
+  font-size:clamp(22px,5vw,36px);font-weight:700;letter-spacing:1px;
+  font-family:'Courier New',monospace;
+}
+#boot-win-sub{font-size:13px;color:#aaa;letter-spacing:4px;text-transform:uppercase}
+#boot-bar-track{
+  width:280px;height:20px;
+  border:2px solid #666;
+  background:#111;
+  overflow:hidden;
+}
+#boot-bar-fill{
+  height:100%;width:0%;
+  background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
+  transition:width .08s linear;
+}
+#boot-status{font-size:11px;color:#888;letter-spacing:2px}
+#boot-skip{
+  position:fixed;bottom:20px;right:20px;
+  font-family:'Courier New',monospace;font-size:11px;
+  color:#444;cursor:pointer;
+}
+#boot-skip:hover{color:#888}
 
 /* ── UTILITIES ── */
 .win-btn{
-  background:var(--win-face);
-  border:none;
+  background:var(--win-face);border:none;
   box-shadow:var(--shadow-out);
-  padding:4px 16px;
-  font-family:inherit;
-  font-size:13px;
-  cursor:pointer;
-  min-width:80px;
-  white-space:nowrap;
+  padding:5px 18px;
+  font-family:inherit;font-size:13px;cursor:pointer;
+  min-width:80px;white-space:nowrap;
+  transition:transform .1s;
 }
-.win-btn:active{box-shadow:var(--shadow-in)}
+.win-btn:hover{filter:brightness(1.04)}
+.win-btn:active{box-shadow:var(--shadow-in);transform:translateY(1px)}
 .win-btn.primary{background:var(--win-blue);color:#fff}
-.win-btn.primary:active{box-shadow:var(--shadow-in)}
 
-.win-panel{
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
-  padding:2px;
-}
-.win-panel-inner{
-  padding:16px;
-}
 .win-titlebar{
   background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
-  color:#fff;
-  padding:3px 6px;
-  font-size:13px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:6px;
-  margin-bottom:0;
-  user-select:none;
+  color:#fff;padding:3px 6px;font-size:13px;font-weight:700;
+  display:flex;align-items:center;gap:6px;user-select:none;
 }
-.win-titlebar .tb-icon{font-size:14px}
 .win-titlebar .tb-btns{margin-left:auto;display:flex;gap:2px}
 .win-titlebar .tb-btns span{
   width:16px;height:14px;background:var(--win-face);
-  box-shadow:var(--shadow-out);
-  font-size:9px;display:flex;align-items:center;justify-content:center;
-  color:#000;cursor:default;font-family:inherit;
+  box-shadow:var(--shadow-out);font-size:9px;
+  display:flex;align-items:center;justify-content:center;color:#000;
 }
+
+/* ── SCROLL REVEAL ── */
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .55s ease,transform .55s ease;
+}
+.reveal.revealed{opacity:1;transform:none}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
 
 /* ── NAV ── */
 .nav{
   position:sticky;top:0;z-index:100;
   background:var(--win-face);
-  box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,0 2px 4px rgba(0,0,0,.3);
-  padding:6px 16px;
+  box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,0 2px 6px rgba(0,0,0,.25);
+  padding:6px 20px;
   display:flex;align-items:center;gap:8px;
 }
-.nav-logo{
-  font-size:14px;font-weight:700;letter-spacing:0;display:flex;align-items:center;gap:6px;
-}
-.nav-logo img,.nav-logo .nl-icon{font-size:18px}
+.nav-logo{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px}
 .nav-links{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
 .nav-links a{
   font-size:12px;padding:3px 10px;
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
-  color:var(--win-black);
-  text-decoration:none;
-  display:inline-block;
+  background:var(--win-face);box-shadow:var(--shadow-out);
+  color:var(--win-black);text-decoration:none;display:inline-block;
+  transition:filter .15s;
 }
-.nav-links a:active,.nav-links a:focus{box-shadow:var(--shadow-in)}
+.nav-links a:hover{filter:brightness(.92)}
+.nav-links a:active,.nav-links a.active-section{box-shadow:var(--shadow-in)}
 .nav-links a.cta{background:var(--win-blue);color:#fff}
+.nav-links a.cta:hover{filter:brightness(1.2)}
 
 /* ── HERO ── */
 .hero{
   background:linear-gradient(180deg,
-    #1a5fa8 0%,
-    #3a8fd1 28%,
-    #6ab8e8 52%,
-    #8ecfef 62%,
-    #7ec850 62%,
-    #5aaa2a 80%,
-    #4a9020 100%
+    #0f4a8a 0%,#2876c2 22%,#5baee0 46%,#8ecfef 60%,
+    #7ec850 60%,#5aaa2a 80%,#3d8818 100%
   );
-  min-height:90vh;
-  display:flex;align-items:center;justify-content:center;
-  padding:60px 20px;
-  position:relative;
-  overflow:hidden;
+  min-height:92vh;display:flex;align-items:center;justify-content:center;
+  padding:60px 20px 80px;position:relative;overflow:hidden;
 }
 .hero-hills{
-  position:absolute;bottom:0;left:0;right:0;height:45%;
-  pointer-events:none;
+  position:absolute;bottom:0;left:0;right:0;height:46%;pointer-events:none;
 }
 .hero-hills svg{width:100%;height:100%;display:block}
-/* fluffy clouds */
-.hero::before{
-  content:'';
-  position:absolute;top:14%;left:10%;
-  width:120px;height:40px;
-  background:#fff;border-radius:40px;
-  box-shadow:40px -10px 0 10px #fff,80px 5px 0 5px #fff,
-             160px 20px 0 8px #fff,200px 10px 0 12px #fff,
-             230px 5px 0 6px #fff,
-             350px -5px 0 14px #fff,390px 8px 0 8px #fff;
-  opacity:.85;
-  pointer-events:none;
+.cloud{
+  position:absolute;background:#fff;border-radius:50px;pointer-events:none;
+  animation:drift linear infinite;
 }
+.cloud::before,.cloud::after{
+  content:'';position:absolute;background:#fff;border-radius:50%;
+}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(120vw)}}
 .hero-window{
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
-  width:100%;max-width:680px;
-  position:relative;z-index:1;
+  background:var(--win-face);box-shadow:var(--shadow-out);
+  width:100%;max-width:700px;position:relative;z-index:1;
+  animation:windowOpen .4s ease 3.8s both;
 }
-.hero-body{
-  padding:28px 32px 32px;
+@keyframes windowOpen{
+  from{opacity:0;transform:scale(.94)}
+  to{opacity:1;transform:scale(1)}
 }
+.hero-body{padding:28px 34px 32px}
 .hero-prompt{
-  color:var(--win-teal);font-size:13px;margin-bottom:10px;font-weight:700;
+  color:var(--win-teal);font-size:13px;margin-bottom:12px;font-weight:700;
+  min-height:20px;
 }
+.cursor{animation:blink .7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .hero-heading{
-  font-size:clamp(22px,5vw,40px);
-  font-weight:700;
-  line-height:1.15;
-  margin-bottom:16px;
-  color:var(--win-black);
+  font-size:clamp(22px,4.5vw,42px);font-weight:700;
+  line-height:1.12;margin-bottom:18px;color:var(--win-black);
 }
 .hero-sub{
-  font-size:14px;
-  color:var(--win-darker);
-  margin-bottom:28px;
-  max-width:480px;
-  line-height:1.7;
+  font-size:14px;color:var(--win-darker);
+  margin-bottom:28px;max-width:500px;line-height:1.75;
 }
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
-.hero-btns .win-btn{padding:6px 20px;font-size:14px}
+.hero-btns .win-btn{padding:7px 22px;font-size:14px}
+.statusbar{
+  background:var(--win-face);border-top:1px solid #808080;
+  padding:3px 10px;font-size:11px;color:var(--win-darker);
+  display:flex;gap:10px;
+}
+.statusbar-cell{box-shadow:var(--shadow-in);padding:1px 6px}
 
 /* ── SECTIONS ── */
-section{padding:60px 20px}
-.section-inner{max-width:960px;margin:0 auto}
-
+section{padding:72px 20px}
+.section-inner{max-width:980px;margin:0 auto}
 .section-title-bar{
   background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
-  color:#fff;padding:4px 10px;
-  font-size:14px;font-weight:700;
-  display:flex;align-items:center;gap:6px;
-  margin-bottom:24px;
+  color:#fff;padding:5px 12px;font-size:14px;font-weight:700;
+  display:flex;align-items:center;gap:6px;margin-bottom:28px;
+}
+
+/* ── STATS ── */
+#stats{background:var(--win-face);padding:28px 20px}
+.stats-row{
+  max-width:980px;margin:0 auto;
+  display:flex;flex-wrap:wrap;justify-content:center;gap:2px;
+}
+.stat-cell{
+  flex:1;min-width:160px;text-align:center;
+  padding:16px 24px;
+  box-shadow:var(--shadow-out);
+  background:var(--win-face);
+}
+.stat-num{font-size:32px;font-weight:700;color:var(--win-blue);line-height:1}
+.stat-label{font-size:11px;color:var(--win-darker);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+
+/* ── HOW IT WORKS ── */
+#process{background:var(--win-gray)}
+.process-steps{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.process-step{
+  background:var(--win-face);box-shadow:var(--shadow-out);
+  padding:2px;
+}
+.process-step-inner{padding:20px 18px}
+.step-num{
+  display:inline-block;
+  background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
+  color:#fff;font-size:11px;font-weight:700;padding:2px 8px;
+  margin-bottom:12px;letter-spacing:1px;
+}
+.step-icon{font-size:26px;margin-bottom:8px}
+.step-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.step-desc{font-size:12px;color:var(--win-darker);line-height:1.7}
+.process-arrow{
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;color:var(--win-dark);padding-top:40px;
 }
 
 /* ── WORK ── */
-#work{background:var(--win-gray)}
+#work{background:var(--win-face)}
 .projects-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:16px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px;
 }
 .project-card{
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
+  background:var(--win-face);box-shadow:var(--shadow-out);
+  transition:transform .2s ease,box-shadow .2s ease;
+  cursor:default;
+}
+.project-card:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    inset -1px -1px #404040,inset 1px 1px #fff,
+    inset -2px -2px #808080,inset 2px 2px #dfdfdf,
+    0 8px 20px rgba(0,0,0,.18);
 }
 .project-card-img{
-  width:100%;aspect-ratio:16/9;
-  background:#c0c0c0;
+  width:100%;aspect-ratio:16/9;background:#b0aca4;
   box-shadow:var(--shadow-in);
   display:flex;align-items:center;justify-content:center;
-  font-size:12px;color:var(--win-dark);
-  overflow:hidden;
+  font-size:12px;color:var(--win-darker);overflow:hidden;
 }
-.project-card-img img{width:100%;height:100%;object-fit:cover}
-.project-card-body{padding:12px 14px 16px}
-.project-card-title{font-size:14px;font-weight:700;margin-bottom:4px}
-.project-card-desc{font-size:12px;color:var(--win-darker);line-height:1.6;margin-bottom:10px}
+.project-card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.project-card-body{padding:14px 16px 18px}
+.project-card-title{font-size:15px;font-weight:700;margin-bottom:5px}
+.project-card-desc{font-size:12px;color:var(--win-darker);line-height:1.65;margin-bottom:12px}
 .project-card-tag{
-  display:inline-block;padding:1px 6px;
-  background:var(--win-teal);color:#fff;
-  font-size:11px;
+  display:inline-block;padding:1px 8px;
+  background:var(--win-teal);color:#fff;font-size:11px;
 }
 
 /* ── SERVICES ── */
 #services{background:var(--win-teal)}
 .services-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:16px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;
 }
 .service-card{
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
-  padding:2px;
+  background:var(--win-face);box-shadow:var(--shadow-out);padding:2px;
+  transition:transform .2s ease;
 }
-.service-card-inner{padding:16px}
-.service-icon{font-size:28px;margin-bottom:10px}
-.service-name{font-size:14px;font-weight:700;margin-bottom:6px}
-.service-desc{font-size:12px;color:var(--win-darker);line-height:1.7}
+.service-card:hover{transform:translateY(-2px)}
+.service-card-inner{padding:18px 16px}
+.service-icon{font-size:30px;margin-bottom:10px}
+.service-name{font-size:14px;font-weight:700;margin-bottom:7px}
+.service-desc{font-size:12px;color:var(--win-darker);line-height:1.75}
 
 /* ── TESTIMONIALS ── */
 #testimonials{background:var(--win-gray)}
 .testimonials-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:16px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;
 }
-.testimonial-card{
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
-  padding:2px;
-}
-.testimonial-card-inner{padding:16px}
-.testimonial-stars{color:#c9a227;font-size:14px;margin-bottom:10px;letter-spacing:2px}
+.testimonial-card{background:var(--win-face);box-shadow:var(--shadow-out);padding:2px}
+.testimonial-card-inner{padding:18px 16px}
+.testimonial-stars{color:#c9a227;font-size:15px;margin-bottom:12px;letter-spacing:2px}
 .testimonial-quote{
-  font-size:13px;line-height:1.7;
-  color:var(--win-darker);
-  margin-bottom:14px;
-  border-left:3px solid var(--win-teal);
-  padding-left:10px;
+  font-size:13px;line-height:1.75;color:var(--win-darker);margin-bottom:16px;
+  border-left:3px solid var(--win-teal);padding-left:12px;font-style:italic;
 }
 .testimonial-name{font-size:13px;font-weight:700}
 .testimonial-role{font-size:11px;color:var(--win-dark)}
 
+/* ── CTA BAND ── */
+#cta-band{
+  background:linear-gradient(to right,var(--win-blue),var(--win-blue2));
+  padding:40px 20px;text-align:center;
+}
+.cta-band-inner{max-width:600px;margin:0 auto}
+.cta-band-heading{
+  font-size:clamp(18px,3vw,28px);font-weight:700;color:#fff;margin-bottom:12px;
+}
+.cta-band-sub{font-size:13px;color:rgba(255,255,255,.75);margin-bottom:24px;line-height:1.7}
+.cta-band-btn{
+  background:var(--win-face);border:none;box-shadow:var(--shadow-out);
+  padding:9px 32px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+  transition:filter .15s;
+}
+.cta-band-btn:hover{filter:brightness(.95)}
+.cta-band-btn:active{box-shadow:var(--shadow-in)}
+
 /* ── CONTACT ── */
 #contact{background:var(--win-teal)}
 .contact-window{
-  max-width:560px;margin:0 auto;
-  background:var(--win-face);
-  box-shadow:var(--shadow-out);
+  max-width:580px;margin:0 auto;
+  background:var(--win-face);box-shadow:var(--shadow-out);
 }
-.contact-body{padding:20px 24px 28px}
+.contact-body{padding:22px 26px 30px}
 .form-group{margin-bottom:14px}
-.form-label{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+.form-label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}
 .form-input,.form-textarea{
-  width:100%;
-  font-family:inherit;
-  font-size:13px;
-  background:#fff;
-  border:none;
-  box-shadow:var(--shadow-in);
-  padding:6px 8px;
-  color:var(--win-black);
+  width:100%;font-family:inherit;font-size:13px;
+  background:#fff;border:none;box-shadow:var(--shadow-in);
+  padding:7px 9px;color:var(--win-black);
 }
-.form-textarea{height:100px;resize:vertical}
-.form-input:focus,.form-textarea:focus{outline:1px dotted var(--win-blue)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-submit{
-  display:flex;justify-content:flex-end;margin-top:6px
+.form-input:focus,.form-textarea:focus{
+  outline:2px solid var(--win-blue);outline-offset:-1px;
 }
-.contact-note{font-size:11px;color:var(--win-darker);margin-top:10px;text-align:center}
+.form-textarea{height:110px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-submit{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.contact-note{font-size:12px;color:var(--win-darker)}
+.contact-note a{color:var(--win-blue)}
 
 /* ── FOOTER ── */
 .footer{
   background:var(--win-face);
   box-shadow:inset -1px -1px #404040,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf;
-  padding:16px 20px;
-  text-align:center;
-  font-size:12px;
-  color:var(--win-darker);
+  padding:14px 20px;
+  font-size:12px;color:var(--win-darker);
   display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;
 }
 .footer a{color:var(--win-blue);text-decoration:underline}
-
-/* ── STATUS BAR ── */
-.statusbar{
-  background:var(--win-face);
-  border-top:1px solid #808080;
-  padding:3px 10px;
-  font-size:11px;
-  color:var(--win-darker);
-  display:flex;gap:12px;
-}
-.statusbar-cell{
-  border:none;box-shadow:var(--shadow-in);
-  padding:1px 6px;
-}
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:16px}
@@ -309,93 +355,190 @@ section{padding:60px 20px}
   .nav-links a:not(.cta){display:none}
   .hero-body{padding:20px 18px 24px}
   .form-row{grid-template-columns:1fr}
-  .hero-btns .win-btn{width:100%}
+  .hero-btns .win-btn{width:100%;text-align:center}
+  .process-arrow{display:none}
+  .stat-cell{min-width:130px}
+  .form-submit{flex-direction:column;gap:10px;align-items:flex-start}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="nav">
+<!-- ── BOOT SCREEN ── -->
+<div id="boot">
+  <div id="boot-bios"></div>
+  <div id="boot-win">
+    <div id="boot-win-logo">🖥️ Council Computing</div>
+    <div id="boot-win-sub">Custom Software · Built Your Way</div>
+    <div id="boot-bar-track"><div id="boot-bar-fill"></div></div>
+    <div id="boot-status">Loading...</div>
+  </div>
+  <div id="boot-skip">[ click or press any key to skip ]</div>
+</div>
+
+<style>
+#boot{position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease}
+#boot.fade-out{opacity:0;pointer-events:none}
+#boot-bios{color:#aaa;font-family:'Courier New',monospace;font-size:13px;line-height:1.9;width:580px;max-width:90vw;padding:0 20px}
+#boot-win{display:none;flex-direction:column;align-items:center;gap:20px;color:#fff;text-align:center;font-family:'Courier New',monospace}
+#boot-win-logo{font-size:clamp(20px,4vw,32px);font-weight:700;letter-spacing:1px}
+#boot-win-sub{font-size:12px;color:#888;letter-spacing:3px;text-transform:uppercase}
+#boot-bar-track{width:260px;height:18px;border:2px solid #444;background:#111;overflow:hidden}
+#boot-bar-fill{height:100%;width:0%;background:linear-gradient(to right,#000080,#1084d0);transition:width .05s linear}
+#boot-status{font-size:11px;color:#555;letter-spacing:2px}
+#boot-skip{position:fixed;bottom:20px;right:20px;font-family:'Courier New',monospace;font-size:11px;color:#333;cursor:pointer}
+#boot-skip:hover{color:#666}
+</style>
+
+<!-- ── NAV ── -->
+<nav class="nav" id="main-nav">
   <div class="nav-logo">
-    <span class="nl-icon">🖥️</span>
+    <span>🖥️</span>
     <span>Council Computing</span>
   </div>
   <div class="nav-links">
-    <a href="#work">Work</a>
-    <a href="#services">Services</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#contact" class="cta">Get a Quote</a>
+    <a href="#work" data-section="work">Work</a>
+    <a href="#services" data-section="services">Services</a>
+    <a href="#process" data-section="process">Process</a>
+    <a href="#contact" class="cta" data-section="contact">Get a Quote</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <!-- clouds -->
+  <div class="cloud" style="width:90px;height:30px;top:12%;left:-10%;animation-duration:90s;animation-delay:0s;opacity:.8">
+    <span style="position:absolute;width:50px;height:40px;background:#fff;border-radius:50%;top:-20px;left:15px"></span>
+    <span style="position:absolute;width:35px;height:30px;background:#fff;border-radius:50%;top:-14px;left:40px"></span>
+  </div>
+  <div class="cloud" style="width:70px;height:24px;top:20%;left:-10%;animation-duration:130s;animation-delay:30s;opacity:.65">
+    <span style="position:absolute;width:40px;height:35px;background:#fff;border-radius:50%;top:-18px;left:10px"></span>
+  </div>
+  <div class="cloud" style="width:110px;height:36px;top:8%;left:-10%;animation-duration:110s;animation-delay:55s;opacity:.75">
+    <span style="position:absolute;width:60px;height:44px;background:#fff;border-radius:50%;top:-22px;left:20px"></span>
+    <span style="position:absolute;width:40px;height:32px;background:#fff;border-radius:50%;top:-14px;left:60px"></span>
+  </div>
+
   <!-- rolling hills -->
   <div class="hero-hills" aria-hidden="true">
     <svg viewBox="0 0 1440 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,200 L0,120 C80,80 160,60 280,90 C400,120 480,140 600,100 C720,60 820,30 960,70 C1100,110 1200,130 1320,100 C1380,85 1410,75 1440,80 L1440,200 Z" fill="#4a9020"/>
-      <path d="M0,200 L0,150 C100,120 200,110 340,130 C480,150 560,160 700,135 C840,110 920,90 1060,115 C1200,140 1300,155 1440,140 L1440,200 Z" fill="#5aaa2a" opacity="0.9"/>
-      <path d="M0,200 L0,175 C120,160 240,155 380,165 C520,175 620,180 760,168 C900,156 1000,148 1140,160 C1280,172 1360,178 1440,172 L1440,200 Z" fill="#6dc235" opacity="0.8"/>
+      <path d="M0,200 L0,110 C80,75 180,55 300,85 C420,115 500,140 640,98 C780,56 880,28 1020,68 C1160,108 1260,132 1370,100 C1410,88 1430,80 1440,78 L1440,200 Z" fill="#3a7a16"/>
+      <path d="M0,200 L0,148 C110,118 230,106 370,130 C510,154 590,164 740,138 C890,112 970,88 1110,114 C1250,140 1340,158 1440,144 L1440,200 Z" fill="#4e9820" opacity=".9"/>
+      <path d="M0,200 L0,174 C130,158 260,153 400,166 C540,179 640,183 780,170 C920,157 1020,146 1160,162 C1300,178 1370,182 1440,175 L1440,200 Z" fill="#62b82a" opacity=".85"/>
     </svg>
   </div>
+
   <div class="hero-window">
     <div class="win-titlebar">
-      <span class="tb-icon">🖥️</span>
+      <span>🖥️</span>
       <span>CouncilComputing.exe</span>
-      <div class="tb-btns">
-        <span>─</span><span>□</span><span>✕</span>
-      </div>
+      <div class="tb-btns"><span>─</span><span>□</span><span>✕</span></div>
     </div>
     <div class="hero-body">
-      <div class="hero-prompt">&gt; custom software, built your way_</div>
-      <h1 class="hero-heading">We build software<br>that works the way<br>you do.</h1>
-      <p class="hero-sub">Council Computing designs and builds custom tools for businesses who've outgrown spreadsheets and off-the-shelf software. You know what you need — we build it.</p>
+      <div class="hero-prompt" id="hero-prompt"><span class="cursor">_</span></div>
+      <h1 class="hero-heading">Your business has<br>problems software<br>can solve. We build it.</h1>
+      <p class="hero-sub">Council Computing builds custom tools for businesses who've outgrown spreadsheets and off-the-shelf apps. No generic solutions — software shaped exactly around how your team works.</p>
       <div class="hero-btns">
         <a href="#work"><button class="win-btn">▶ View Work</button></a>
-        <a href="#contact"><button class="win-btn primary">✉ Get a Quote</button></a>
+        <a href="#contact"><button class="win-btn primary">✉ Get a Quote — Free</button></a>
       </div>
     </div>
     <div class="statusbar">
       <span class="statusbar-cell">Ready</span>
-      <span class="statusbar-cell">Custom Software</span>
       <span class="statusbar-cell">councilcomputing@gmail.com</span>
+      <span class="statusbar-cell" id="sb-clock"></span>
     </div>
   </div>
 </section>
 
-<!-- WORK -->
+<!-- ── STATS ── -->
+<div id="stats">
+  <div class="stats-row">
+    <div class="stat-cell reveal">
+      <div class="stat-num" data-count="5">0</div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+    <div class="stat-cell reveal reveal-delay-1">
+      <div class="stat-num" data-count="4">0</div>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+    <div class="stat-cell reveal reveal-delay-2">
+      <div class="stat-num" data-count="100">0</div>
+      <div class="stat-label">% Custom-Built</div>
+    </div>
+    <div class="stat-cell reveal reveal-delay-3">
+      <div class="stat-num">1</div>
+      <div class="stat-label">Business Day Response</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="process">
+  <div class="section-inner">
+    <div class="section-title-bar reveal">
+      <span>📋</span><span>How It Works</span>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="process-step-inner">
+          <div class="step-num">STEP 01</div>
+          <div class="step-icon">💬</div>
+          <div class="step-title">Tell us what you need</div>
+          <div class="step-desc">Fill out the quote form with your problem — not a spec doc, just a plain description of what's not working and what you wish you had instead.</div>
+        </div>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-step-inner">
+          <div class="step-num">STEP 02</div>
+          <div class="step-icon">🔨</div>
+          <div class="step-title">We scope &amp; build it</div>
+          <div class="step-desc">We scope the project, agree on a price, and get to work. You stay in the loop — no surprises, no scope creep, no disappearing for three months.</div>
+        </div>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-step-inner">
+          <div class="step-num">STEP 03</div>
+          <div class="step-icon">✅</div>
+          <div class="step-title">You own it, forever</div>
+          <div class="step-desc">When we deliver, you own the code outright. No monthly license, no vendor lock-in. It runs your way, on your timeline, with no strings attached.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WORK ── -->
 <section id="work">
   <div class="section-inner">
-    <div class="section-title-bar">
-      <span>💼</span>
-      <span>Selected Work</span>
+    <div class="section-title-bar reveal">
+      <span>💼</span><span>Selected Work</span>
     </div>
     <div class="projects-grid">
 
-      <div class="project-card">
-        <div class="project-card-img">[ screenshot ]</div>
+      <div class="project-card reveal">
+        <div class="project-card-img">[ screenshot coming soon ]</div>
         <div class="project-card-body">
           <div class="project-card-title">Surety Bond Manager</div>
-          <div class="project-card-desc">Bond-tracking web app for the Insurance Agency of Mid America. Manage and monitor surety bonds in one place — replacing a tangle of spreadsheets.</div>
+          <div class="project-card-desc">Bond-tracking web app for the Insurance Agency of Mid America — replacing a tangle of spreadsheets with a single source of truth for managing and monitoring surety bonds.</div>
           <span class="project-card-tag">Web App</span>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card reveal reveal-delay-1">
         <div class="project-card-img">[ screenshot ]</div>
         <div class="project-card-body">
           <div class="project-card-title">[ Project Title ]</div>
-          <div class="project-card-desc">[ One line on what you built and the result it drove for the client. ]</div>
+          <div class="project-card-desc">[ One or two sentences on what you built and what it replaced or improved for the client. ]</div>
           <span class="project-card-tag">[ Type ]</span>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card reveal reveal-delay-2">
         <div class="project-card-img">[ screenshot ]</div>
         <div class="project-card-body">
           <div class="project-card-title">[ Project Title ]</div>
-          <div class="project-card-desc">[ One line on what you built and the result it drove for the client. ]</div>
+          <div class="project-card-desc">[ One or two sentences on what you built and what it replaced or improved for the client. ]</div>
           <span class="project-card-tag">[ Type ]</span>
         </div>
       </div>
@@ -404,104 +547,100 @@ section{padding:60px 20px}
   </div>
 </section>
 
-<!-- SERVICES -->
+<!-- ── SERVICES ── -->
 <section id="services">
   <div class="section-inner">
-    <div class="section-title-bar">
-      <span>⚙️</span>
-      <span>What We Build</span>
+    <div class="section-title-bar reveal">
+      <span>⚙️</span><span>What We Build</span>
     </div>
     <div class="services-grid">
-
-      <div class="service-card">
+      <div class="service-card reveal">
         <div class="service-card-inner">
           <div class="service-icon">🌐</div>
           <div class="service-name">Web Applications</div>
-          <div class="service-desc">Custom web apps that replace spreadsheets, manual processes, and off-the-shelf tools that almost — but don't quite — fit.</div>
+          <div class="service-desc">Custom web apps that replace spreadsheets, manual processes, and off-the-shelf tools that almost — but don't quite — fit your operation.</div>
         </div>
       </div>
-
-      <div class="service-card">
+      <div class="service-card reveal reveal-delay-1">
         <div class="service-card-inner">
           <div class="service-icon">📊</div>
-          <div class="service-name">Internal Tools</div>
-          <div class="service-desc">Dashboards, reporting tools, and internal systems built for the way your team actually works — not the way some vendor assumes you work.</div>
+          <div class="service-name">Internal Tools & Dashboards</div>
+          <div class="service-desc">Reporting tools and internal systems built for the way your team actually works — not the way some vendor assumes you work.</div>
         </div>
       </div>
-
-      <div class="service-card">
+      <div class="service-card reveal reveal-delay-2">
         <div class="service-card-inner">
           <div class="service-icon">🔗</div>
           <div class="service-name">Integrations & Automation</div>
-          <div class="service-desc">Connect your existing tools, automate repetitive work, and stop copying data between systems by hand.</div>
+          <div class="service-desc">Connect your existing tools, automate repetitive tasks, and stop copying data between systems by hand.</div>
         </div>
       </div>
-
-      <div class="service-card">
+      <div class="service-card reveal reveal-delay-3">
         <div class="service-card-inner">
           <div class="service-icon">📱</div>
-          <div class="service-name">Mobile Apps</div>
-          <div class="service-desc">Lightweight mobile apps and PWAs for teams in the field — built for real-world conditions, not just a demo environment.</div>
+          <div class="service-name">Mobile & PWA</div>
+          <div class="service-desc">Lightweight mobile apps for teams in the field — built for real-world conditions, works on any device without an app store install.</div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
+<!-- ── TESTIMONIALS ── -->
 <section id="testimonials">
   <div class="section-inner">
-    <div class="section-title-bar">
-      <span>★</span>
-      <span>Testimonials</span>
+    <div class="section-title-bar reveal">
+      <span>★</span><span>What Clients Say</span>
     </div>
     <div class="testimonials-grid">
-
-      <div class="testimonial-card">
+      <div class="testimonial-card reveal">
         <div class="testimonial-card-inner">
           <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-quote">"[ A sentence or two from a happy client about what Council Computing built and how it helped their business. ]"</div>
+          <div class="testimonial-quote">"[ A sentence or two from a client about what Council Computing built and how it helped their business. ]"</div>
           <div class="testimonial-name">[ Client Name ]</div>
           <div class="testimonial-role">[ Role · Company ]</div>
         </div>
       </div>
-
-      <div class="testimonial-card">
+      <div class="testimonial-card reveal reveal-delay-1">
         <div class="testimonial-card-inner">
           <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-quote">"[ A sentence or two from a happy client about what Council Computing built and how it helped their business. ]"</div>
+          <div class="testimonial-quote">"[ A sentence or two from a client about what Council Computing built and how it helped their business. ]"</div>
           <div class="testimonial-name">[ Client Name ]</div>
           <div class="testimonial-role">[ Role · Company ]</div>
         </div>
       </div>
-
-      <div class="testimonial-card">
+      <div class="testimonial-card reveal reveal-delay-2">
         <div class="testimonial-card-inner">
           <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-quote">"[ A sentence or two from a happy client about what Council Computing built and how it helped their business. ]"</div>
+          <div class="testimonial-quote">"[ A sentence or two from a client about what Council Computing built and how it helped their business. ]"</div>
           <div class="testimonial-name">[ Client Name ]</div>
           <div class="testimonial-role">[ Role · Company ]</div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- ── CTA BAND ── -->
+<div id="cta-band">
+  <div class="cta-band-inner reveal">
+    <div class="cta-band-heading">Ready to stop fighting your software?</div>
+    <div class="cta-band-sub">Tell us what you need built. We'll scope it, price it, and get to work — no endless discovery calls, no vague timelines.</div>
+    <a href="#contact"><button class="cta-band-btn">✉ Get a Free Quote</button></a>
+  </div>
+</div>
+
+<!-- ── CONTACT ── -->
 <section id="contact">
   <div class="section-inner">
-    <div class="contact-window">
+    <div class="contact-window reveal">
       <div class="win-titlebar">
-        <span class="tb-icon">✉</span>
+        <span>✉</span>
         <span>RequestQuote.exe</span>
-        <div class="tb-btns">
-          <span>─</span><span>□</span><span>✕</span>
-        </div>
+        <div class="tb-btns"><span>─</span><span>□</span><span>✕</span></div>
       </div>
       <div class="contact-body">
-        <p style="font-size:13px;margin-bottom:18px;color:var(--win-darker)">&gt; Tell us what you want built and we'll scope it out. We reply within 1 business day.</p>
+        <p style="font-size:13px;margin-bottom:20px;color:var(--win-darker)">&gt; Describe what you need built. We reply within 1 business day with a scoping question or a straight quote.</p>
         <form name="contact" netlify>
           <div class="form-row">
             <div class="form-group">
@@ -519,19 +658,19 @@ section{padding:60px 20px}
           </div>
           <div class="form-group">
             <label class="form-label" for="fmsg">What do you need built?</label>
-            <textarea class="form-textarea" id="fmsg" name="message" placeholder="Describe the problem you're trying to solve..." required></textarea>
+            <textarea class="form-textarea" id="fmsg" name="message" placeholder="Describe the problem you're trying to solve — plain English is fine." required></textarea>
           </div>
           <div class="form-submit">
+            <span class="contact-note">Or email: <a href="mailto:councilcomputing@gmail.com">councilcomputing@gmail.com</a></span>
             <button class="win-btn primary" type="submit">Send ✉</button>
           </div>
         </form>
-        <p class="contact-note">Or email directly: <a href="mailto:councilcomputing@gmail.com" style="color:var(--win-blue)">councilcomputing@gmail.com</a></p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── FOOTER ── -->
 <footer class="footer">
   <span>© 2026 Council Computing</span>
   <span>·</span>
@@ -540,5 +679,146 @@ section{padding:60px 20px}
   <span>Custom software, built your way.</span>
 </footer>
 
+<script>
+/* ── BOOT SEQUENCE ── */
+(function(){
+  const boot = document.getElementById('boot');
+  const biosEl = document.getElementById('boot-bios');
+  const winEl = document.getElementById('boot-win');
+  const barFill = document.getElementById('boot-bar-fill');
+  const statusEl = document.getElementById('boot-status');
+
+  const LINES = [
+    {t:'<span style="color:#fff;font-size:15px;font-weight:bold">Council Computing Systems BIOS v2.6</span>'},
+    {t:'Copyright (C) 2026 Council Computing, Inc.'},
+    {t:''},
+    {t:'CPU: Custom Silicon    3.0 GHz      OK'},
+    {t:'Memory Test: 640K                   OK'},
+    {t:'Detecting Primary HDD ...           OK'},
+    {t:'Detecting USB Controller ...        OK'},
+    {t:''},
+    {t:'<span style="color:#fff">Loading COUNCIL.SYS ...</span>'},
+    {t:'<span style="color:#fff">Starting Windows 98 ...</span>'},
+  ];
+
+  let done = false;
+  function finish(){
+    if(done) return;
+    done = true;
+    boot.classList.add('fade-out');
+    setTimeout(()=>{ boot.style.display='none'; startTypewriter(); }, 650);
+  }
+
+  document.addEventListener('keydown', finish);
+  document.getElementById('boot-skip').addEventListener('click', finish);
+  boot.addEventListener('click', finish);
+
+  let li = 0;
+  function nextLine(){
+    if(li >= LINES.length){
+      setTimeout(showWin, 300);
+      return;
+    }
+    const d = document.createElement('div');
+    d.innerHTML = LINES[li].t;
+    biosEl.appendChild(d);
+    li++;
+    setTimeout(nextLine, li < 4 ? 60 : 120);
+  }
+
+  function showWin(){
+    biosEl.style.display = 'none';
+    winEl.style.display = 'flex';
+    let pct = 0;
+    const statuses = ['Loading drivers...','Initializing...','Starting services...','Almost ready...','Done.'];
+    let si = 0;
+    const bar = setInterval(()=>{
+      pct += 2 + Math.random()*3;
+      if(pct > 100) pct = 100;
+      barFill.style.width = pct+'%';
+      if(si < statuses.length && pct > si*(100/statuses.length)){
+        statusEl.textContent = statuses[si++];
+      }
+      if(pct >= 100){
+        clearInterval(bar);
+        setTimeout(finish, 400);
+      }
+    }, 50);
+  }
+
+  setTimeout(nextLine, 200);
+})();
+
+/* ── TYPEWRITER ── */
+function startTypewriter(){
+  const el = document.getElementById('hero-prompt');
+  const text = '> custom software, built your way';
+  el.innerHTML = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  cursor.textContent = '_';
+  el.appendChild(cursor);
+  let i = 0;
+  const t = setInterval(()=>{
+    if(i < text.length){
+      el.insertBefore(document.createTextNode(text[i]), cursor);
+      i++;
+    } else { clearInterval(t); }
+  }, 42);
+}
+
+/* ── SCROLL REVEAL ── */
+const revealObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('revealed'); });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+/* ── COUNTER ANIMATION ── */
+function animateCounter(el, target, duration=1200){
+  const start = performance.now();
+  const tick = (now)=>{
+    const progress = Math.min((now - start)/duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if(progress < 1) requestAnimationFrame(tick);
+    else el.textContent = target;
+  };
+  requestAnimationFrame(tick);
+}
+const counterObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const target = parseInt(e.target.dataset.count);
+      if(target) animateCounter(e.target, target);
+      counterObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+document.querySelectorAll('.stat-num[data-count]').forEach(el=>counterObs.observe(el));
+
+/* ── ACTIVE NAV ── */
+const sections = document.querySelectorAll('section[id], div[id="stats"]');
+const navLinks = document.querySelectorAll('.nav-links a[data-section]');
+const sectionObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.remove('active-section'));
+      const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if(link) link.classList.add('active-section');
+    }
+  });
+},{rootMargin:'-40% 0px -55% 0px'});
+sections.forEach(s=>sectionObs.observe(s));
+
+/* ── STATUS BAR CLOCK ── */
+function updateClock(){
+  const now = new Date();
+  const h = now.getHours(), m = now.getMinutes().toString().padStart(2,'0');
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  document.getElementById('sb-clock').textContent = `${h%12||12}:${m} ${ampm}`;
+}
+updateClock();
+setInterval(updateClock, 30000);
+</script>
 </body>
 </html>
