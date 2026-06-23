@@ -752,6 +752,57 @@ const secObs=new IntersectionObserver(entries=>entries.forEach(e=>{
 }),{rootMargin:'-40% 0px -55% 0px'});
 document.querySelectorAll('section[id]').forEach(s=>secObs.observe(s));
 
+/* ── SECRET EASTER EGG: KONAMI CODE → BSOD ── */
+(function(){
+  const CODE=[38,38,40,40,37,39,37,39,66,65];
+  let pos=0;
+  document.addEventListener('keydown',e=>{
+    if(e.keyCode===CODE[pos]){
+      pos++;
+      if(pos===CODE.length){
+        pos=0;
+        showBSOD();
+      }
+    } else {
+      pos=e.keyCode===CODE[0]?1:0;
+    }
+  });
+
+  function showBSOD(){
+    const el=document.createElement('div');
+    el.id='bsod';
+    el.style.cssText='position:fixed;inset:0;z-index:99999;background:#0000aa;color:#fff;font-family:"Courier New",monospace;font-size:16px;padding:40px 60px;line-height:1.8;cursor:pointer;overflow:auto';
+    el.innerHTML=`
+<div style="background:#aaa;color:#0000aa;padding:2px 8px;display:inline-block;margin-bottom:24px;font-weight:bold">Windows</div>
+
+<p>A fatal exception <b>0E</b> has occurred at <b>0028:CC0DE:G00D</b> in VXD <b>COUNCIL.SYS</b></p>
+<br>
+<p style="color:#ffff55;font-weight:bold">COUNCIL_COMPUTING_FOUND_IT</p>
+<br>
+<p>If you are seeing this screen, you have discovered the super secret easter egg.<br>
+Good job. Seriously. Most people just look at the website and leave.</p>
+<br>
+<p>The real secret is that we just really like building software.</p>
+<br>
+<p>If you need something built, give us a shout:</p>
+<p style="color:#aaffaa">  📞  (405) 696-9330</p>
+<p style="color:#aaffaa">  ✉   councilcomputing@gmail.com</p>
+<br>
+<p>* You have unlocked: absolutely nothing. But now you know the Konami Code.</p>
+<p>* If this is your first time seeing this screen, tell a friend.</p>
+<p>* Tell Hayes you found it for a free high-five.</p>
+<br>
+<p style="color:#ffff55">*** STOP: 0x00HAYES (0xY0UFOUND, 0x1T, 0xC0NGRATS, 0xL0L)</p>
+<br>
+<br>
+<p style="animation:blink .7s step-end infinite">Press any key to continue _</p>
+    `;
+    el.addEventListener('click',()=>el.remove());
+    document.addEventListener('keydown',()=>el.remove(),{once:true});
+    document.body.appendChild(el);
+  }
+})();
+
 /* ── CLOCK ── */
 function tick(){
   const n=new Date(),h=n.getHours(),m=n.getMinutes().toString().padStart(2,'0'),ap=h>=12?'PM':'AM';
