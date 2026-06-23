@@ -28,7 +28,8 @@ body{
   font-family:var(--body-font);
   background:var(--win-teal);
   color:var(--win-black);
-  line-height:1.5;
+  font-size:18px;
+  line-height:1.8;
   overflow-x:hidden;
 }
 
@@ -121,11 +122,11 @@ body{
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .hero-heading{
   font-family:var(--body-font);
-  font-size:clamp(22px,4.5vw,42px);font-weight:800;
-  line-height:1.12;margin-bottom:18px;color:#0a0a0a;
+  font-size:clamp(26px,4.5vw,48px);font-weight:800;
+  line-height:1.12;margin-bottom:20px;color:#0a0a0a;
 }
 .hero-sub{
-  font-size:16px;color:#333;margin-bottom:28px;max-width:500px;line-height:1.75;
+  font-size:18px;color:#222;margin-bottom:32px;max-width:520px;line-height:1.85;
 }
 .hero-btns{display:flex;gap:10px;flex-wrap:wrap}
 .hero-btns .win-btn{padding:7px 22px;font-size:14px}
@@ -163,8 +164,8 @@ section{padding:72px 20px}
   margin-bottom:12px;letter-spacing:1px;
 }
 .step-icon{font-size:28px;margin-bottom:8px}
-.step-title{font-size:16px;font-weight:700;margin-bottom:7px;color:#0a0a0a}
-.step-desc{font-size:14px;color:#333;line-height:1.7}
+.step-title{font-size:18px;font-weight:700;margin-bottom:8px;color:#0a0a0a}
+.step-desc{font-size:17px;color:#222;line-height:1.85}
 
 /* ── WORK ── */
 #work{background:var(--win-face)}
@@ -184,8 +185,8 @@ section{padding:72px 20px}
 }
 .project-card-img img{width:100%;height:100%;object-fit:cover;display:block}
 .project-card-body{padding:14px 16px 18px}
-.project-card-title{font-size:16px;font-weight:700;margin-bottom:6px;color:#0a0a0a}
-.project-card-desc{font-size:14px;color:#333;line-height:1.65;margin-bottom:12px}
+.project-card-title{font-size:18px;font-weight:700;margin-bottom:8px;color:#0a0a0a}
+.project-card-desc{font-size:16px;color:#222;line-height:1.8;margin-bottom:14px}
 .project-card-tag{display:inline-block;padding:2px 8px;background:var(--win-teal);color:#fff;font-size:12px;font-family:var(--mono-font)}
 
 /* ── SERVICES ── */
@@ -195,8 +196,8 @@ section{padding:72px 20px}
 .service-card:hover{transform:translateY(-2px)}
 .service-card-inner{padding:18px 16px}
 .service-icon{font-size:30px;margin-bottom:10px}
-.service-name{font-size:15px;font-weight:700;margin-bottom:7px;color:#0a0a0a}
-.service-desc{font-size:14px;color:#333;line-height:1.7}
+.service-name{font-size:18px;font-weight:700;margin-bottom:8px;color:#0a0a0a}
+.service-desc{font-size:16px;color:#222;line-height:1.85}
 
 /* ── TESTIMONIALS ── */
 #testimonials{background:var(--win-gray)}
@@ -205,17 +206,17 @@ section{padding:72px 20px}
 .testimonial-card-inner{padding:18px 16px}
 .testimonial-stars{color:#c9a227;font-size:15px;margin-bottom:12px;letter-spacing:2px}
 .testimonial-quote{
-  font-size:14px;line-height:1.75;color:#333;margin-bottom:16px;
-  border-left:3px solid var(--win-teal);padding-left:12px;font-style:italic;
+  font-size:17px;line-height:1.85;color:#222;margin-bottom:18px;
+  border-left:4px solid var(--win-teal);padding-left:14px;font-style:italic;
 }
-.testimonial-name{font-size:14px;font-weight:700;color:#0a0a0a}
-.testimonial-role{font-size:12px;color:#666;margin-top:2px}
+.testimonial-name{font-size:16px;font-weight:700;color:#0a0a0a}
+.testimonial-role{font-size:14px;color:#555;margin-top:3px}
 
 /* ── CTA BAND ── */
 #cta-band{background:linear-gradient(to right,var(--win-blue),var(--win-blue2));padding:44px 20px;text-align:center}
 .cta-band-inner{max-width:620px;margin:0 auto}
-.cta-band-heading{font-size:clamp(18px,3vw,30px);font-weight:800;color:#fff;margin-bottom:12px}
-.cta-band-sub{font-size:15px;color:rgba(255,255,255,.8);margin-bottom:26px;line-height:1.7}
+.cta-band-heading{font-size:clamp(22px,3vw,34px);font-weight:800;color:#fff;margin-bottom:14px}
+.cta-band-sub{font-size:18px;color:rgba(255,255,255,.85);margin-bottom:28px;line-height:1.8}
 .cta-band-btn{
   background:var(--win-face);border:none;box-shadow:var(--shadow-out);
   padding:9px 32px;font-family:var(--mono-font);font-size:14px;font-weight:700;cursor:pointer;
@@ -269,8 +270,8 @@ section{padding:72px 20px}
 .form-group{margin-bottom:13px}
 .form-label{display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#0a0a0a}
 .form-input,.form-textarea{
-  width:100%;font-size:13px;background:#fff;border:none;
-  box-shadow:var(--shadow-in);padding:7px 9px;color:#0a0a0a;
+  width:100%;font-size:17px;background:#fff;border:none;
+  box-shadow:var(--shadow-in);padding:10px 12px;color:#0a0a0a;
 }
 .form-input:focus,.form-textarea:focus{outline:2px solid var(--win-blue);outline-offset:-1px}
 .form-textarea{height:90px;resize:vertical}
@@ -636,12 +637,19 @@ section{padding:72px 20px}
   const statusEl=document.getElementById('boot-status');
   const LINES=[
     '<span style="color:#fff;font-size:15px;font-weight:bold">Council Computing Systems BIOS v2.6</span>',
-    '<span style="color:#8aaadd">Copyright (C) 2026 Council Computing, Inc.</span>',
+    '<span style="color:#8aaadd">Copyright (C) 2026 Council Computing, Inc. All rights reserved. Mostly.</span>',
     '',
-    '<span style="color:#aac8ff">CPU: Custom Silicon    3.0 GHz</span>      <span style="color:#66dd88">OK</span>',
-    '<span style="color:#aac8ff">Memory Test: 640K</span>                   <span style="color:#66dd88">OK</span>',
-    '<span style="color:#aac8ff">Detecting Primary HDD ...</span>           <span style="color:#66dd88">OK</span>',
-    '<span style="color:#aac8ff">Detecting USB Controller ...</span>        <span style="color:#66dd88">OK</span>',
+    '<span style="color:#aac8ff">CPU: Custom Silicon         3.0 GHz</span>    <span style="color:#66dd88">OK</span>',
+    '<span style="color:#aac8ff">Memory Test: 640K</span>                     <span style="color:#66dd88">OK</span>',
+    '<span style="color:#aac8ff">Detecting Primary HDD ...</span>             <span style="color:#66dd88">OK</span>',
+    '<span style="color:#aac8ff">Detecting Printer ...</span>                 <span style="color:#ff7777">NOT FOUND (as usual)</span>',
+    '<span style="color:#aac8ff">Checking for Y2K bugs ...</span>             <span style="color:#66dd88">STILL NONE (phew)</span>',
+    '<span style="color:#aac8ff">Downloading more RAM ...</span>              <span style="color:#ff7777">NICE TRY</span>',
+    '<span style="color:#aac8ff">Looking for your car keys ...</span>         <span style="color:#ff7777">NOT FOUND</span>',
+    '<span style="color:#aac8ff">Asking Jeeves ...</span>                     <span style="color:#ffaa44">NO RESPONSE</span>',
+    '<span style="color:#aac8ff">Installing 347 Windows updates ...</span>    <span style="color:#ffaa44">MAYBE LATER</span>',
+    '<span style="color:#aac8ff">Checking if it\'s the cable ...</span>        <span style="color:#66dd88">IT\'S ALWAYS THE CABLE</span>',
+    '<span style="color:#aac8ff">Turning it off and on again ...</span>       <span style="color:#66dd88">OK THAT WORKED</span>',
     '',
     '<span style="color:#fff">Loading COUNCIL.SYS ...</span>',
     '<span style="color:#fff">Starting Windows 98 ...</span>',
@@ -664,7 +672,7 @@ section{padding:72px 20px}
   function showWin(){
     biosEl.style.display='none';winEl.style.display='flex';
     let pct=0,si=0;
-    const statuses=['Loading drivers...','Initializing...','Starting services...','Almost ready...','Done.'];
+    const statuses=['Blaming IT...','Pretending to work...','Googling the error...','Turning it off and on again...','Actually working now.','Done! (We think.)'];
     const bar=setInterval(()=>{
       pct+=2+Math.random()*3;if(pct>100)pct=100;
       barFill.style.width=pct+'%';
