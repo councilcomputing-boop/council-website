@@ -620,7 +620,8 @@ section{padding:72px 20px}
       </div>
       <div class="contact-body">
         <p class="contact-intro">&gt; Describe what you need built. We reply within 1 business day.</p>
-        <form action="https://formspree.io/councilcomputing@gmail.com" method="POST">
+        <form name="contact" netlify data-netlify="true" action="/success">
+          <input type="hidden" name="form-name" value="contact">
           <div class="form-row">
             <div class="form-group">
               <label class="form-label" for="fname">Name</label>
