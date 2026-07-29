@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Council Computing — Logo Options</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Courier New',monospace;background:#0d1117;color:#fff;padding:40px 24px}
+h1{font-size:13px;color:#4a6aaa;margin-bottom:8px;letter-spacing:3px;text-transform:uppercase}
+h2{font-size:11px;color:#2a4a7a;margin-bottom:32px;letter-spacing:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:32px;margin-bottom:60px}
+.logo-card{display:flex;flex-direction:column;gap:0}
+.logo-label{font-size:10px;color:#2a4a7a;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border:1px solid #1a2a4a;border-bottom:none}
+.logo-bg-gray{background:#d4d0c8;padding:28px 32px;display:flex;justify-content:center;align-items:center;border:1px solid #1a2a4a}
+.logo-bg-dark{background:#0d1117;padding:28px 32px;display:flex;justify-content:center;align-items:center;border:1px solid #1a2a4a}
+.logo-bg-teal{background:#008080;padding:28px 32px;display:flex;justify-content:center;align-items:center;border:1px solid #1a2a4a}
+.logo-bg-navy{background:#000080;padding:28px 32px;display:flex;justify-content:center;align-items:center;border:1px solid #1a2a4a}
+.logo-bg-white{background:#ffffff;padding:28px 32px;display:flex;justify-content:center;align-items:center;border:1px solid #1a2a4a}
+.logo-bg-xp{background:linear-gradient(160deg,#0a2a6e,#0d3a8f);padding:28px 32px;display:flex;justify-content:center;align-items:center;border:1px solid #1a2a4a}
+.tabs{display:flex;gap:0;border:1px solid #1a2a4a;border-top:none}
+.tab{flex:1;padding:6px;font-size:9px;color:#2a4a7a;text-align:center;cursor:pointer;letter-spacing:1px;border-right:1px solid #1a2a4a;text-transform:uppercase}
+.tab:last-child{border-right:none}
+.tab.active{color:#aac8ff;background:#0a1428}
+</style>
+</head>
+<body>
+
+<h1>Council Computing — Logo Options</h1>
+<h2>Click the background tabs to preview each logo on different colors</h2>
+
+<div class="grid">
+
+  <!-- ══ A: ORIGINAL MONITOR + WORDMARK ══ -->
+  <div class="logo-card">
+    <div class="logo-label">A — Monitor + Wordmark</div>
+    <div class="logo-bg-gray" id="bg-A">
+      <svg width="300" height="68" viewBox="0 0 300 68" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="62" height="48" rx="3" fill="#c8c4bc"/>
+        <rect x="1" y="1" width="62" height="2" fill="#fff"/>
+        <rect x="1" y="1" width="2" height="48" fill="#fff"/>
+        <rect x="60" y="2" width="3" height="47" fill="#808080"/>
+        <rect x="2" y="48" width="61" height="2" fill="#808080"/>
+        <rect x="6" y="6" width="52" height="36" rx="2" fill="#001800"/>
+        <text x="10" y="20" font-family="Courier New" font-size="8" fill="#00ee66" font-weight="bold">COUNCIL</text>
+        <text x="10" y="30" font-family="Courier New" font-size="7" fill="#00bb44">COMPUTING</text>
+        <text x="10" y="38" font-family="Courier New" font-size="6.5" fill="#006622">&gt; run_</text>
+        <rect x="24" y="50" width="16" height="6" fill="#b0aca4"/>
+        <rect x="10" y="56" width="44" height="7" rx="2" fill="#c8c4bc"/>
+        <rect x="10" y="56" width="44" height="1.5" fill="#fff"/>
+        <text x="78" y="24" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Council</text>
+        <text x="78" y="46" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Computing</text>
+        <text x="80" y="60" font-family="Courier New" font-size="8.5" fill="#008080">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="setBg('A','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('A','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('A','teal',this)">Teal</div>
+      <div class="tab" onclick="setBg('A','white',this)">White</div>
+    </div>
+  </div>
+
+  <!-- ══ B: TERMINAL WINDOW ══ -->
+  <div class="logo-card">
+    <div class="logo-label">B — Terminal Window</div>
+    <div class="logo-bg-dark" id="bg-B">
+      <svg width="300" height="90" viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+        <!-- Window chrome -->
+        <rect x="1" y="1" width="298" height="88" fill="#c8c4bc"/>
+        <rect x="1" y="1" width="298" height="1.5" fill="#fff"/>
+        <rect x="1" y="1" width="1.5" height="88" fill="#fff"/>
+        <rect x="297" y="1" width="2" height="88" fill="#404040"/>
+        <rect x="1" y="88" width="298" height="1.5" fill="#404040"/>
+        <!-- Title bar -->
+        <rect x="1" y="1" width="298" height="20" fill="url(#tb-grad)"/>
+        <defs>
+          <linearGradient id="tb-grad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#000080"/>
+            <stop offset="100%" stop-color="#1084d0"/>
+          </linearGradient>
+        </defs>
+        <text x="8" y="14" font-family="Courier New" font-size="11" fill="#fff" font-weight="bold">🖥️  CouncilComputing.exe</text>
+        <!-- Title bar buttons -->
+        <rect x="262" y="4" width="14" height="12" fill="#c8c4bc"/>
+        <rect x="262" y="4" width="14" height="1" fill="#fff"/>
+        <rect x="262" y="4" width="1" height="12" fill="#fff"/>
+        <rect x="275" y="4" width="1" height="12" fill="#404040"/>
+        <rect x="262" y="16" width="14" height="1" fill="#404040"/>
+        <text x="266" y="13" font-family="Courier New" font-size="8" fill="#000">─</text>
+        <rect x="278" y="4" width="14" height="12" fill="#c8c4bc"/>
+        <rect x="278" y="4" width="14" height="1" fill="#fff"/>
+        <rect x="278" y="4" width="1" height="12" fill="#fff"/>
+        <rect x="291" y="4" width="1" height="12" fill="#404040"/>
+        <rect x="278" y="16" width="14" height="1" fill="#404040"/>
+        <text x="282" y="13" font-family="Courier New" font-size="8" fill="#000">□</text>
+        <rect x="284" y="4" width="14" height="12" fill="#c8c4bc"/>
+        <text x="288" y="13" font-family="Courier New" font-size="8" fill="#000">✕</text>
+        <!-- Terminal body -->
+        <rect x="3" y="21" width="294" height="66" fill="#001800"/>
+        <!-- Terminal content -->
+        <text x="12" y="38" font-family="Courier New" font-size="11" fill="#00ee66">C:\&gt; whoami</text>
+        <text x="12" y="52" font-family="Courier New" font-size="11" fill="#00cc55">Council Computing</text>
+        <text x="12" y="66" font-family="Courier New" font-size="11" fill="#008833">custom software, built your way</text>
+        <text x="12" y="80" font-family="Courier New" font-size="11" fill="#00ee66">C:\&gt; <tspan fill="#00ee66" style="animation:blink .7s step-end infinite">_</tspan></text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab" onclick="setBg('B','gray',this)">Gray</div>
+      <div class="tab active" onclick="setBg('B','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('B','teal',this)">Teal</div>
+      <div class="tab" onclick="setBg('B','white',this)">White</div>
+    </div>
+  </div>
+
+  <!-- ══ C: CC MONOGRAM ICON ══ -->
+  <div class="logo-card">
+    <div class="logo-label">C — CC Monogram Badge</div>
+    <div class="logo-bg-gray" id="bg-C">
+      <svg width="280" height="80" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+        <!-- Badge outer -->
+        <rect x="1" y="1" width="78" height="78" fill="#c8c4bc"/>
+        <rect x="1" y="1" width="78" height="2" fill="#fff"/>
+        <rect x="1" y="1" width="2" height="78" fill="#fff"/>
+        <rect x="77" y="1" width="2" height="78" fill="#404040"/>
+        <rect x="1" y="77" width="78" height="2" fill="#404040"/>
+        <!-- Badge inner sunken -->
+        <rect x="6" y="6" width="68" height="68" fill="#b8b4ac"/>
+        <rect x="6" y="6" width="68" height="1.5" fill="#808080"/>
+        <rect x="6" y="6" width="1.5" height="68" fill="#808080"/>
+        <rect x="72" y="6" width="2" height="68" fill="#fff"/>
+        <rect x="6" y="72" width="68" height="2" fill="#fff"/>
+        <!-- CC Letters -->
+        <text x="40" y="52" font-family="Courier New" font-size="42" font-weight="bold" fill="#000080" text-anchor="middle">CC</text>
+        <!-- Underline -->
+        <rect x="14" y="57" width="52" height="3" fill="#008080"/>
+        <!-- Text -->
+        <text x="96" y="26" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Council</text>
+        <text x="96" y="48" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Computing</text>
+        <text x="98" y="63" font-family="Courier New" font-size="8.5" fill="#008080">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="setBg('C','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('C','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('C','teal',this)">Teal</div>
+      <div class="tab" onclick="setBg('C','white',this)">White</div>
+    </div>
+  </div>
+
+  <!-- ══ D: TITLE BAR LOGO ══ -->
+  <div class="logo-card">
+    <div class="logo-label">D — Title Bar Wordmark</div>
+    <div class="logo-bg-white" id="bg-D">
+      <svg width="300" height="72" viewBox="0 0 300 72" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer panel -->
+        <rect x="1" y="1" width="298" height="70" fill="#c8c4bc"/>
+        <rect x="1" y="1" width="298" height="1.5" fill="#fff"/>
+        <rect x="1" y="1" width="1.5" height="70" fill="#fff"/>
+        <rect x="297" y="1" width="2" height="70" fill="#404040"/>
+        <rect x="1" y="69" width="298" height="2" fill="#404040"/>
+        <!-- Title bar -->
+        <rect x="3" y="3" width="294" height="24" fill="url(#g2)"/>
+        <defs>
+          <linearGradient id="g2" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#000080"/>
+            <stop offset="100%" stop-color="#1084d0"/>
+          </linearGradient>
+        </defs>
+        <text x="10" y="19" font-family="Courier New" font-size="13" fill="#fff" font-weight="bold">🖥️  Council Computing</text>
+        <!-- Body content -->
+        <text x="12" y="46" font-family="Courier New" font-size="10" fill="#000080">SOFTWARE DESIGN FOR COMPANIES</text>
+        <text x="12" y="61" font-family="Courier New" font-size="9" fill="#008080">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab" onclick="setBg('D','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('D','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('D','teal',this)">Teal</div>
+      <div class="tab active" onclick="setBg('D','white',this)">White</div>
+    </div>
+  </div>
+
+  <!-- ══ E: NEON / XP STYLE ══ -->
+  <div class="logo-card">
+    <div class="logo-label">E — XP Blue Glow</div>
+    <div class="logo-bg-xp" id="bg-E">
+      <svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Monitor glow version -->
+        <rect x="1" y="8" width="60" height="46" rx="4" fill="#1a3a8a" stroke="#4488dd" stroke-width="1.5"/>
+        <rect x="6" y="13" width="50" height="34" rx="2" fill="#001020"/>
+        <text x="10" y="26" font-family="Courier New" font-size="7.5" fill="#66aaff" font-weight="bold" filter="url(#glow)">COUNCIL</text>
+        <text x="10" y="36" font-family="Courier New" font-size="6.5" fill="#4488dd">COMPUTING</text>
+        <text x="10" y="44" font-family="Courier New" font-size="6" fill="#2255aa">&gt; run_</text>
+        <rect x="22" y="54" width="18" height="6" fill="#1a3a8a"/>
+        <rect x="10" y="60" width="42" height="6" rx="2" fill="#1a3a8a" stroke="#4488dd" stroke-width="1"/>
+        <!-- Text with glow -->
+        <text x="74" y="30" font-family="Courier New" font-size="20" font-weight="bold" fill="#aaccff" filter="url(#glow)">Council</text>
+        <text x="74" y="52" font-family="Courier New" font-size="20" font-weight="bold" fill="#aaccff" filter="url(#glow)">Computing</text>
+        <text x="76" y="67" font-family="Courier New" font-size="8.5" fill="#4488dd">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab" onclick="setBg('E','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('E','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('E','teal',this)">Teal</div>
+      <div class="tab active" onclick="setBg('E','xp',this)">XP Blue</div>
+    </div>
+  </div>
+
+  <!-- ══ F: SIMPLE BOLD WORDMARK ══ -->
+  <div class="logo-card">
+    <div class="logo-label">F — Bold Wordmark (text only)</div>
+    <div class="logo-bg-gray" id="bg-F">
+      <svg width="300" height="72" viewBox="0 0 300 72" xmlns="http://www.w3.org/2000/svg">
+        <!-- Teal accent bar -->
+        <rect x="0" y="0" width="6" height="72" fill="#008080"/>
+        <!-- Text block -->
+        <text x="18" y="28" font-family="Courier New" font-size="24" font-weight="bold" fill="#000080" letter-spacing="-1">COUNCIL</text>
+        <text x="18" y="52" font-family="Courier New" font-size="24" font-weight="bold" fill="#000080" letter-spacing="-1">COMPUTING</text>
+        <!-- Underline -->
+        <rect x="18" y="56" width="240" height="2" fill="#008080"/>
+        <!-- Tag -->
+        <text x="20" y="68" font-family="Courier New" font-size="8.5" fill="#008080">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="setBg('F','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('F','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('F','teal',this)">Teal</div>
+      <div class="tab" onclick="setBg('F','white',this)">White</div>
+    </div>
+  </div>
+
+  <!-- ══ G: PIXEL ART MONITOR (detailed) ══ -->
+  <div class="logo-card">
+    <div class="logo-label">G — Detailed Pixel Monitor</div>
+    <div class="logo-bg-gray" id="bg-G">
+      <svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+        <!-- Monitor body with more detail -->
+        <rect x="1" y="4" width="76" height="60" rx="5" fill="#c8c4bc"/>
+        <rect x="1" y="4" width="76" height="2.5" fill="#fff"/>
+        <rect x="1" y="4" width="2.5" height="60" fill="#fff"/>
+        <rect x="74" y="6" width="3" height="58" fill="#808080"/>
+        <rect x="3" y="62" width="74" height="2" fill="#808080"/>
+        <!-- Screen bezel (sunken) -->
+        <rect x="8" y="10" width="62" height="46" rx="3" fill="#888"/>
+        <rect x="9" y="11" width="60" height="44" rx="2" fill="#001a00"/>
+        <!-- Scanlines effect -->
+        <rect x="9" y="11" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="13" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="15" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="17" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="19" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="21" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="23" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="25" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="27" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="29" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="31" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="33" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="35" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="37" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="39" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="41" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="43" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="45" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="47" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="49" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <rect x="9" y="51" width="60" height="1" fill="rgba(0,0,0,0.2)"/>
+        <!-- Screen text -->
+        <text x="13" y="24" font-family="Courier New" font-size="7.5" fill="#00ee66" font-weight="bold">C:\COUNCIL&gt;</text>
+        <text x="13" y="34" font-family="Courier New" font-size="7" fill="#00cc55">run software.exe</text>
+        <text x="13" y="44" font-family="Courier New" font-size="6.5" fill="#008833">Loading...</text>
+        <text x="13" y="52" font-family="Courier New" font-size="7" fill="#00ee66">Done. ■</text>
+        <!-- Screen shine -->
+        <rect x="11" y="13" width="22" height="10" rx="2" fill="rgba(255,255,255,0.06)"/>
+        <!-- Power LED -->
+        <circle cx="68" cy="59" r="2.5" fill="#00ee44"/>
+        <!-- Floppy drive -->
+        <rect x="30" y="57" width="22" height="6" rx="1" fill="#aaa"/>
+        <rect x="30" y="57" width="22" height="1" fill="#888"/>
+        <rect x="30" y="62" width="22" height="1" fill="#ccc"/>
+        <!-- Stand neck -->
+        <rect x="30" y="64" width="18" height="7" fill="#b4b0a8"/>
+        <rect x="30" y="64" width="18" height="1" fill="#999"/>
+        <!-- Base -->
+        <rect x="12" y="71" width="54" height="8" rx="3" fill="#c8c4bc"/>
+        <rect x="12" y="71" width="54" height="1.5" fill="#fff"/>
+        <!-- Wordmark -->
+        <text x="90" y="32" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Council</text>
+        <text x="90" y="54" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Computing</text>
+        <text x="92" y="68" font-family="Courier New" font-size="8.5" fill="#008080">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="setBg('G','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('G','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('G','teal',this)">Teal</div>
+      <div class="tab" onclick="setBg('G','white',this)">White</div>
+    </div>
+  </div>
+
+  <!-- ══ H: CIRCLE / SEAL ══ -->
+  <div class="logo-card">
+    <div class="logo-label">H — Circle Seal</div>
+    <div class="logo-bg-gray" id="bg-H">
+      <svg width="280" height="80" viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer circle -->
+        <circle cx="40" cy="40" r="38" fill="#000080"/>
+        <circle cx="40" cy="40" r="36" fill="#c8c4bc"/>
+        <circle cx="40" cy="40" r="30" fill="#000080"/>
+        <!-- Monitor in circle -->
+        <rect x="22" y="22" width="36" height="28" rx="2" fill="#c8c4bc"/>
+        <rect x="24" y="24" width="32" height="22" rx="1" fill="#001800"/>
+        <text x="28" y="33" font-family="Courier New" font-size="5.5" fill="#00ee66" font-weight="bold">COUNCIL</text>
+        <text x="27" y="40" font-family="Courier New" font-size="5" fill="#00cc55">COMPUTING</text>
+        <text x="29" y="43" font-family="Courier New" font-size="4.5" fill="#006622">&gt;_</text>
+        <rect x="34" y="50" width="12" height="3" fill="#a8a4a0"/>
+        <rect x="26" y="53" width="28" height="5" rx="1" fill="#c8c4bc"/>
+        <!-- Text around circle -->
+        <path id="circleTop" d="M 8,40 A 32,32 0 0,1 72,40" fill="none"/>
+        <text font-family="Courier New" font-size="6" fill="#c8c4bc" font-weight="bold" letter-spacing="3">
+          <textPath href="#circleTop" startOffset="4%">COUNCIL · COMPUTING</textPath>
+        </text>
+        <path id="circleBottom" d="M 72,40 A 32,32 0 0,1 8,40" fill="none"/>
+        <text font-family="Courier New" font-size="5" fill="#aac8ff" letter-spacing="1.5">
+          <textPath href="#circleBottom" startOffset="8%">CUSTOM SOFTWARE · BUILT YOUR WAY</textPath>
+        </text>
+        <!-- Wordmark -->
+        <text x="96" y="28" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Council</text>
+        <text x="96" y="50" font-family="Courier New" font-size="20" font-weight="bold" fill="#000080">Computing</text>
+        <text x="98" y="65" font-family="Courier New" font-size="8.5" fill="#008080">&gt; custom software, built your way_</text>
+      </svg>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="setBg('H','gray',this)">Gray</div>
+      <div class="tab" onclick="setBg('H','dark',this)">Dark</div>
+      <div class="tab" onclick="setBg('H','teal',this)">Teal</div>
+      <div class="tab" onclick="setBg('H','white',this)">White</div>
+    </div>
+  </div>
+
+</div>
+
+<div style="font-size:11px;color:#2a4a7a;border-top:1px solid #1a2a4a;padding-top:20px">
+  Tell me which letter(s) you like and I'll build them into the site.
+</div>
+
+<script>
+const SVGS = {};
+document.querySelectorAll('[id^="bg-"]').forEach(el => {
+  SVGS[el.id.replace('bg-','')] = el.querySelector('svg').outerHTML;
+});
+
+function setBg(id, bg, tab) {
+  const el = document.getElementById('bg-' + id);
+  el.className = 'logo-bg-' + bg;
+  // Update colors in SVG text for dark/teal/navy contrast
+  tab.closest('.logo-card').querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+}
+</script>
+</body>
+</html>
