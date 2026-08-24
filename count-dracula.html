@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CountDracula — Hi-Lo card counting trainer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="CountDracula turns Hi-Lo card counting practice into a game, with drill modes, a true-count trainer, and a dealer who's had three centuries of practice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #120709;
+    --ink-800: #1b0b0f;
+    --maroon-900: #1e0a0f;
+    --maroon-800: #2b0d15;
+    --maroon-700: #3b1219;
+    --maroon-600: #4d1a22;
+    --parch: #f7efd9;
+    --parch-light: #fbf7ea;
+    --parch-mute: #e6e3ea;
+    --parch-line: #ddd2b4;
+    --gold: #c8a94b;
+    --gold-deep: #9c7c22;
+    --gold-soft: #eee0b0;
+    --blood: #e0184f;
+    --blood-deep: #a01020;
+    --charcoal: #241a15;
+    --charcoal-soft: #5c4b3f;
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: 'Inter', system-ui, sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; }
+  body{
+    background: var(--ink);
+    font-family: var(--font-sans);
+    color: var(--parch);
+  }
+  a{ color:inherit; }
+  img,svg{ max-width:100%; display:block; }
+
+  .wrap{ max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+  .site-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 24px 0; border-bottom: 1px solid rgba(200,169,75,0.15);
+  }
+  .nav-brand{ display:flex; align-items:center; gap:10px; }
+  .nav-mark{
+    width:36px; height:36px; border-radius:50%;
+    background: var(--maroon-700); box-shadow: 0 0 0 1px rgba(200,169,75,0.5);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .nav-word{ font-family: var(--font-serif); font-weight:600; font-size:19px; letter-spacing:0.02em; color: var(--gold-soft); }
+  .nav-word b{ color: var(--gold); font-weight:700; }
+  .nav-links{ display:flex; align-items:center; gap:26px; }
+  .nav-links a{ font-size:13.5px; color: rgba(247,239,217,0.6); text-decoration:none; }
+  .nav-links a:hover{ color: var(--parch); }
+  .nav-cta{
+    background: var(--gold); color: var(--ink);
+    padding: 10px 20px; border-radius: 999px;
+    font-size:13px; font-weight:700; text-decoration:none;
+    white-space:nowrap; box-shadow: 0 8px 20px -8px rgba(200,169,75,0.6);
+  }
+
+  .hero{
+    display:flex; align-items:center; gap:56px;
+    padding: 56px 0 96px;
+    flex-wrap: wrap;
+  }
+  .hero-copy{ flex:1 1 420px; min-width:320px; }
+  .eyebrow{
+    font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+    color: var(--gold); margin-bottom:18px;
+  }
+  .hero h1{
+    font-family: var(--font-serif); font-weight:600;
+    font-size: clamp(34px, 5vw, 52px); line-height:1.08;
+    margin: 0 0 20px; max-width: 500px; color: var(--parch-light);
+  }
+  .hero h1 em{ font-style: italic; color: var(--gold); }
+  .hero p{
+    font-size:16.5px; line-height:1.7; color: rgba(247,239,217,0.65);
+    max-width:460px; margin: 0 0 32px;
+  }
+  .badges{ display:flex; gap:12px; flex-wrap:wrap; }
+  .badge{
+    display:flex; align-items:center; gap:10px;
+    background: var(--gold); color: var(--ink);
+    padding: 11px 18px; border-radius: 14px; text-decoration:none;
+    box-shadow: 0 10px 24px -10px rgba(200,169,75,0.55);
+  }
+  .badge-text{ line-height:1.2; }
+  .badge-sub{ font-size:9.5px; color: rgba(18,7,9,0.65); }
+  .badge-main{ font-size:14px; font-weight:700; }
+
+  .hero-phone{ flex:0 0 auto; display:flex; justify-content:center; }
+
+  .features{ padding: 30px 0 96px; }
+  .section-eyebrow{
+    font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase;
+    color: var(--gold); margin-bottom:12px; text-align:center;
+  }
+  .section-title{
+    font-family: var(--font-serif); font-weight:600; font-size: 32px;
+    text-align:center; margin: 0 0 12px; color: var(--parch-light);
+  }
+  .section-sub{ text-align:center; color: rgba(247,239,217,0.55); font-size:15px; max-width:520px; margin: 0 auto 48px; line-height:1.6; }
+  .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:22px; }
+  .feature-card{
+    background: var(--maroon-900); border:1px solid rgba(200,169,75,0.18); border-radius:18px;
+    padding: 26px 24px; transition: border-color .18s, transform .18s;
+  }
+  .feature-card:hover{ border-color: rgba(200,169,75,0.5); transform: translateY(-2px); }
+  .feature-icon{
+    width:42px; height:42px; border-radius:12px;
+    background: var(--maroon-700); color: var(--gold);
+    display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+  }
+  .feature-card h3{ font-family: var(--font-serif); font-weight:600; font-size:19px; margin: 0 0 8px; color: var(--parch-light); }
+  .feature-card p{ font-size:13.5px; line-height:1.6; color: rgba(247,239,217,0.55); margin:0; }
+
+  .how{ background: var(--maroon-900); padding: 88px 0; border-top: 1px solid rgba(200,169,75,0.15); border-bottom: 1px solid rgba(200,169,75,0.15); }
+  .steps{ display:grid; grid-template-columns: repeat(4,1fr); gap:20px; }
+  .step{ background: var(--ink-800); border-radius:16px; padding: 22px 18px; border: 1px solid rgba(200,169,75,0.15); }
+  .step-num{
+    width:30px; height:30px; border-radius:50%; background: var(--blood);
+    color: var(--parch-light); display:flex; align-items:center; justify-content:center;
+    font-family: var(--font-serif); font-weight:700; font-size:14px; margin-bottom:14px;
+  }
+  .step h3{ font-family: var(--font-serif); font-weight:600; font-size:16.5px; margin-bottom:7px; color: var(--parch-light); }
+  .step p{ font-size:13px; color: rgba(247,239,217,0.55); line-height:1.55; }
+
+  .quote-band{ padding: 88px 0; text-align:center; }
+  .quote-band .quote-mark{ font-family: var(--font-serif); font-size:60px; color: var(--gold); line-height:0.5; display:block; margin-bottom:16px; }
+  .quote-band p{
+    font-family: var(--font-serif); font-style:italic; font-size: clamp(18px,2.4vw,24px);
+    line-height:1.6; max-width:680px; margin: 0 auto 18px; color: var(--parch-light);
+  }
+  .quote-band .ref{ font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color: var(--gold); font-weight:600; }
+
+  .install{ background: var(--maroon-900); padding: 88px 0; border-top: 1px solid rgba(200,169,75,0.15); }
+  .install-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:22px; margin-bottom:22px; }
+  .install-card{ background: var(--ink-800); border:1px solid rgba(200,169,75,0.15); border-radius:18px; padding: 22px 24px; }
+  .install-card h3{ font-family: var(--font-serif); font-weight:600; font-size:17px; margin: 0 0 4px; color: var(--parch-light); }
+  .install-tag{ font-size:12px; color: var(--gold); font-weight:600; margin-bottom:12px; }
+  .install-card ol{ margin:0; padding-left:18px; font-size:13.5px; line-height:1.7; color: rgba(247,239,217,0.6); }
+  .install-card ol li strong{ color: var(--parch-light); font-weight:600; }
+  .install-link{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    background: var(--ink-800); border: 1px solid rgba(200,169,75,0.3); color: var(--parch);
+    border-radius:16px; padding: 16px 20px;
+  }
+  .install-link code{ font-family: var(--font-sans); font-size:14px; color: var(--gold-soft); }
+  .install-link a{
+    background: var(--gold); color: var(--ink); text-decoration:none;
+    padding: 8px 16px; border-radius:999px; font-size:13px; font-weight:700; white-space:nowrap;
+  }
+
+  .cta-band{ padding: 88px 0 96px; text-align:center; }
+  .cta-band h2{ font-family: var(--font-serif); font-weight:600; font-size: clamp(24px,3vw,34px); color: var(--parch-light); margin-bottom:14px; }
+  .cta-band p{ font-size:15.5px; color: rgba(247,239,217,0.55); margin-bottom:28px; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.7; }
+
+  .site-footer{
+    padding: 36px 0 50px; border-top: 1px solid rgba(200,169,75,0.15);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+  }
+  .footer-links{ display:flex; gap:22px; }
+  .footer-links a{ font-size:13px; color: rgba(247,239,217,0.55); text-decoration:none; }
+  .footer-links a:hover{ color: var(--parch); }
+  .footer-copy{ font-size:13px; color: rgba(247,239,217,0.4); }
+
+  @media (max-width: 860px){
+    .feature-grid, .install-grid{ grid-template-columns: 1fr; }
+    .steps{ grid-template-columns: repeat(2,1fr); }
+    .hero{ justify-content:center; text-align:left; }
+  }
+
+  /* --- phone mockup --- */
+  .device{
+    position:relative; width:360px; height:760px;
+    border-radius:52px; padding:14px;
+    background: linear-gradient(160deg, #2a2724, #0c0908);
+    box-shadow: 0 40px 90px -22px rgba(0,0,0,0.7), 0 0 0 1px rgba(200,169,75,0.12) inset;
+  }
+  .screen{
+    position:relative; width:100%; height:100%; border-radius:40px; overflow:hidden;
+    background: var(--maroon-900); display:flex; flex-direction:column;
+  }
+  .notch{
+    position:absolute; top:12px; left:50%; transform:translateX(-50%);
+    width:110px; height:28px; background:#0c0b09; border-radius:18px; z-index:20;
+  }
+  .status-bar{
+    position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center;
+    padding: 16px 26px 0; font-weight:600; font-size:14px; color: var(--parch);
+  }
+  .status-icons{ display:flex; gap:5px; align-items:center; color: var(--parch); }
+  .app-header{
+    display:flex; align-items:center; gap:10px;
+    border-bottom: 1px solid rgba(200,169,75,0.25); background: var(--maroon-800);
+    padding: 14px 18px; margin-top: 14px;
+  }
+  .app-badge{
+    width:40px; height:40px; border-radius:50%; flex-shrink:0;
+    background: radial-gradient(circle at 35% 30%, var(--blood), var(--maroon-700) 70%);
+    box-shadow: 0 0 0 1.5px rgba(200,169,75,0.6);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .app-word{ font-family: var(--font-serif); font-size:18px; line-height:1; color: var(--gold-soft); }
+  .app-word b{ color: var(--gold); }
+  .app-tagline{ font-family: var(--font-serif); font-style:italic; font-size:10px; color: rgba(247,239,217,0.5); margin-top:3px; }
+  .app-drops{
+    margin-left:auto; display:flex; align-items:center; gap:5px; flex-shrink:0;
+    background: var(--maroon-700); border-radius:999px; padding: 6px 10px;
+    box-shadow: 0 0 0 1px rgba(200,169,75,0.35);
+  }
+  .app-drops span{ font-family: var(--font-serif); font-weight:600; font-size:12.5px; color: var(--gold-soft); }
+
+  .app-content{ flex:1; padding: 16px 16px 10px; overflow-y:auto; }
+  .mode-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:14px; }
+  .mode-tile{
+    background: var(--parch); border-radius:16px; padding: 16px 10px;
+    display:flex; flex-direction:column; align-items:center; gap:5px; text-align:center;
+  }
+  .mode-tile .mi{
+    width:34px; height:34px; border-radius:10px; background: var(--parch-mute);
+    color: var(--maroon-800); display:flex; align-items:center; justify-content:center;
+  }
+  .mode-tile .ml{ font-size:12.5px; font-weight:700; color: var(--charcoal); line-height:1.2; }
+  .mode-tile .ms{ font-size:10px; color: var(--charcoal-soft); line-height:1.2; }
+
+  .drops-panel{ background: var(--parch); border-radius:16px; padding: 14px 16px; }
+  .drops-row{ display:flex; align-items:center; justify-content:space-between; }
+  .drops-label{ font-family: var(--font-serif); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color: var(--gold-deep); }
+  .drops-val{ display:flex; align-items:center; gap:6px; font-family: var(--font-serif); font-size:20px; font-weight:600; color: var(--gold-deep); }
+  .claim-btn{
+    margin-top:10px; display:block; width:100%; text-align:center; padding: 10px;
+    background:#fff; border-radius:12px; font-size:13px; font-weight:700; color: var(--charcoal);
+    box-shadow: 0 6px 16px -8px rgba(0,0,0,0.3);
+  }
+
+  .bottom-nav{ display:flex; border-top: 1px solid rgba(200,169,75,0.25); background: var(--maroon-800); }
+  .bn-item{ flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; padding: 12px 0 10px; }
+  .bn-item svg{ opacity:0.5; }
+  .bn-item.active svg{ opacity:1; color: var(--blood); }
+  .bn-item span{ font-family: var(--font-serif); font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color: rgba(247,239,217,0.45); }
+  .bn-item.active span{ color: var(--gold); }
+
+  .home-indicator{
+    position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+    width:120px; height:4px; border-radius:3px; background: var(--parch); opacity:0.3; z-index:20;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="site-nav">
+    <div class="nav-brand">
+      <div class="nav-mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2c1 3-2 4-2 7a3 3 0 0 0 6 0c1.5 1.5 2 3.3 2 5a6 6 0 1 1-12 0c0-3 2-4 2-7 0-1.5.5-3 2-4 0 1.5.5 2.5 2 3-0.5-1.5 0-3 0-4Z" fill="#e0184f"/></svg>
+      </div>
+      <span class="nav-word">Count<b>Dracula</b></span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="index.html#work">← All Projects</a>
+    </div>
+    <a class="nav-cta" href="https://countdrculacards.com/">Open the App</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">Hi-Lo card counting trainer</div>
+      <h1>Master the count, <em>one hand at a time.</em></h1>
+      <p>CountDracula turns blackjack card counting practice into a game — five drill modes, a running-count-to-true-count trainer, and a dealer with three centuries of table experience narrating every lesson.</p>
+      <div class="badges">
+        <a class="badge" href="https://countdrculacards.com/">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v11m0-11 4 4m-4-4-4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="#120709" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="badge-text"><span class="badge-sub">No app store — it's a web app</span><br><span class="badge-main">Open countdrculacards.com</span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-phone">
+      <div class="device">
+        <div class="screen">
+          <div class="notch"></div>
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="status-icons">
+              <svg width="16" height="10" viewBox="0 0 18 11" fill="none"><rect x="0" y="7" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="5" y="5" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="3" height="9" rx="0.5" fill="currentColor"/><rect x="15" y="0" width="3" height="11" rx="0.5" fill="currentColor" opacity="0.35"/></svg>
+              <svg width="22" height="11" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.5" fill="currentColor"/></svg>
+            </div>
+          </div>
+
+          <div class="app-header">
+            <div class="app-badge">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2c1 3-2 4-2 7a3 3 0 0 0 6 0c1.5 1.5 2 3.3 2 5a6 6 0 1 1-12 0c0-3 2-4 2-7 0-1.5.5-3 2-4 0 1.5.5 2.5 2 3-0.5-1.5 0-3 0-4Z" fill="#eee0b0"/></svg>
+            </div>
+            <div>
+              <div class="app-word">Count<b>Dracula</b></div>
+              <div class="app-tagline">He never loses count · Hi-Lo System</div>
+            </div>
+            <div class="app-drops">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 2c4 6 7 9.5 7 13.5A7 7 0 1 1 5 15.5C5 11.5 8 8 12 2Z" fill="#e0184f"/></svg>
+              <span>12,450</span>
+            </div>
+          </div>
+
+          <div class="app-content">
+            <div class="mode-grid">
+              <div class="mode-tile">
+                <div class="mi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="10" width="18" height="5" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg></div>
+                <div class="ml">Manual</div><div class="ms">Count a real deck</div>
+              </div>
+              <div class="mode-tile">
+                <div class="mi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+                <div class="ml">Classic / Peek</div><div class="ms">Peek allowed</div>
+              </div>
+              <div class="mode-tile">
+                <div class="mi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.9.5-1 1-1 1.7" stroke-linecap="round"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg></div>
+                <div class="ml">Quiz Practice</div><div class="ms">Count stays hidden</div>
+              </div>
+              <div class="mode-tile">
+                <div class="mi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h16M4 16h16" stroke-linecap="round"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg></div>
+                <div class="ml">Deck Math</div><div class="ms">Running → true</div>
+              </div>
+              <div class="mode-tile">
+                <div class="mi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke-linejoin="round"/></svg></div>
+                <div class="ml">Speed Drill</div><div class="ms">Beat the clock</div>
+              </div>
+              <div class="mode-tile">
+                <div class="mi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0 0 4h13"/></svg></div>
+                <div class="ml">Rules</div><div class="ms">Learn Hi-Lo</div>
+              </div>
+            </div>
+
+            <div class="drops-panel">
+              <div class="drops-row">
+                <span class="drops-label">Blood Drops</span>
+                <span class="drops-val">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2c4 6 7 9.5 7 13.5A7 7 0 1 1 5 15.5C5 11.5 8 8 12 2Z" fill="#e0184f"/></svg>
+                  12,450
+                </span>
+              </div>
+              <div class="claim-btn">Claim Daily Bonus (+250)</div>
+            </div>
+          </div>
+
+          <div class="bottom-nav">
+            <div class="bn-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9"/></svg><span>Home</span></div>
+            <div class="bn-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 10h18M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg><span>Store</span></div>
+            <div class="bn-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Backs</span></div>
+            <div class="bn-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg><span>Profile</span></div>
+          </div>
+
+          <div class="home-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="section-eyebrow">What's inside</div>
+    <div class="section-title">Five ways to learn the count</div>
+    <div class="section-sub">Purpose-built drills, not a generic flashcard app — built around the same Hi-Lo system real counters use.</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3>Classic / Peek Practice</h3>
+        <p>Play simulated hands against the dealer with betting and splits — peek at your running count for a cost in Blood Drops.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.9.5-1 1-1 1.7" stroke-linecap="round"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg></div>
+        <h3>Quiz Practice</h3>
+        <p>The same game, but the count stays hidden — the dealer demands it of you at moments of his choosing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16M4 16h16" stroke-linecap="round"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/><circle cx="16" cy="16" r="1.4" fill="currentColor"/></svg></div>
+        <h3>Deck Math</h3>
+        <p>A calculator and drill for converting a running count into a true count — the number that actually matters at the table.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke-linejoin="round"/></svg></div>
+        <h3>Speed Drill</h3>
+        <p>A full deck flashes by at speed. Keep the count in your head and answer for it at the end.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+        <h3>Collectible Card Backs</h3>
+        <p>Earn Blood Drops from drills and daily bonuses, then spend them on chests, spins, and card-back skins in the Store.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="wrap" style="padding:0;">
+      <div class="section-eyebrow">How it works</div>
+      <div class="section-title">Four steps to a real edge</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Pick a mode</h3>
+          <p>Manual, Classic/Peek, Quiz Practice, Deck Math, or Speed Drill — start wherever your count needs the most work.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Count as the cards fall</h3>
+          <p>Track the running count using Hi-Lo values: low cards +1, middle cards 0, high cards and aces −1.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Convert to true count</h3>
+          <p>Divide the running count by decks remaining in Deck Math to find the number that actually tells you the edge.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <h3>Earn Blood Drops</h3>
+          <p>Drills and daily bonuses earn Blood Drops — spend them on peeks, chests, and card-back collectibles.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote-band">
+    <span class="quote-mark">&ldquo;</span>
+    <p>Sit. Listen well. In three centuries at the tables of Europe, I have never once lost the thread of a shoe. Tonight I teach you the method that keeps me&hellip; comfortable: the Hi-Lo count.</p>
+    <div class="ref">— The Dealer, CountDracula</div>
+  </section>
+
+  <section class="install" id="install">
+    <div class="section-eyebrow">Get it on your phone</div>
+    <div class="section-title">No app store. Just add it to your home screen.</div>
+    <div class="install-grid">
+      <div class="install-card">
+        <h3>iPhone</h3>
+        <div class="install-tag">Must use Safari</div>
+        <ol>
+          <li>Open <a href="https://countdrculacards.com/" style="color:var(--gold);">countdrculacards.com</a> in <strong>Safari</strong> (not Chrome)</li>
+          <li>Tap the <strong>Share</strong> button at the bottom of the screen</li>
+          <li>Scroll down and tap <strong>Add to Home Screen</strong></li>
+          <li>Tap <strong>Add</strong> in the top right</li>
+        </ol>
+      </div>
+      <div class="install-card">
+        <h3>Android</h3>
+        <div class="install-tag">Works in Chrome</div>
+        <ol>
+          <li>Open <a href="https://countdrculacards.com/" style="color:var(--gold);">countdrculacards.com</a> in <strong>Chrome</strong></li>
+          <li>Tap the <strong>⋮</strong> menu in the top right corner</li>
+          <li>Tap <strong>Add to Home Screen</strong></li>
+          <li>Tap <strong>Add</strong> to confirm</li>
+        </ol>
+      </div>
+    </div>
+    <div class="install-link">
+      <code>countdrculacards.com</code>
+      <a href="https://countdrculacards.com/">Open link ↗</a>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <h2>Ready to beat the count?</h2>
+    <p>Six modes, a true-count trainer, and a dealer who's seen every trick — all in one free-to-start web app.</p>
+    <a class="badge" href="https://countdrculacards.com/" style="display:inline-flex;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v11m0-11 4 4m-4-4-4 4M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="#120709" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="badge-text"><span class="badge-sub">No app store — it's a web app</span><br><span class="badge-main">Open countdrculacards.com</span></span>
+    </a>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-copy">© 2026 Council Computing. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="index.html#work">All Projects</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
