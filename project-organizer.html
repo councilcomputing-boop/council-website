@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Project Organizer — a Council Computing case study</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How Council Computing built Project Organizer, a startup toolkit for group workspaces, tasks, metrics, outreach, and time tracking.">
+<style>
+  :root{
+    --ink:#0f172a; --ink2:#1e293b; --ink3:#334155;
+    --blue:#2563eb; --blue2:#1d4ed8; --blue-light:#eff6ff; --blue-mid:#dbeafe;
+    --green:#059669; --green-light:#ecfdf5; --green-mid:#d1fae5;
+    --amber:#d97706; --amber-light:#fffbeb;
+    --red:#dc2626; --red-light:#fef2f2;
+    --slate:#64748b; --slate-light:#f1f5f9; --slate-mid:#e2e8f0;
+    --purple:#7c3aed; --purple-light:#f5f3ff;
+    --surface:#fff; --bg:#f8fafc;
+    --border:#e2e8f0; --muted:#64748b; --text:#0f172a;
+    --font: -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06);
+    --shadow-pop:0 4px 8px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.1);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{ font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  img,svg{ max-width:100%; display:block; }
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 32px; }
+
+  /* nav */
+  .nav{ position:sticky; top:0; z-index:200; background:var(--ink); box-shadow:var(--shadow); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:var(--blue); display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 4px 14px -4px rgba(37,99,235,.7); }
+  .brand-name{ color:#fff; font-weight:700; font-size:16.5px; line-height:1.1; letter-spacing:-.2px; }
+  .brand-sub{ color:rgba(255,255,255,.5); font-size:10.5px; }
+  .nav-links{ display:flex; align-items:center; gap:6px; }
+  .nav-link{ color:rgba(255,255,255,.75); text-decoration:none; font-size:14px; font-weight:500; padding:9px 14px; border-radius:8px; transition:background .15s,color .15s; }
+  .nav-link:hover{ background:rgba(255,255,255,.08); color:#fff; }
+  .btn-ghost{ display:inline-flex; align-items:center; gap:8px; background:transparent; color:#fff; padding:9px 18px; font-size:13.5px; font-weight:600; border:1px solid rgba(255,255,255,.25); border-radius:8px; text-decoration:none; }
+  .btn-ghost:hover{ background:rgba(255,255,255,.08); }
+
+  /* hero */
+  .hero{ background:radial-gradient(900px 420px at 82% -10%, rgba(37,99,235,.16), transparent 60%), linear-gradient(180deg,#f8fafc,#eef2f7); padding:64px 0 88px; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; color:var(--blue2); font-size:12.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; background:var(--blue-light); border:1px solid var(--blue-mid); padding:6px 12px; border-radius:999px; margin-bottom:20px; }
+  .hero h1{ font-size:42px; line-height:1.12; font-weight:800; letter-spacing:-1px; color:var(--ink); }
+  .hero h1 span{ color:var(--blue); }
+  .hero p.lead{ color:var(--slate); font-size:17px; line-height:1.65; margin-top:18px; max-width:520px; }
+  .confidential-note{ display:flex; align-items:center; gap:10px; margin-top:28px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 16px; max-width:460px; box-shadow:var(--shadow); }
+  .confidential-note svg{ flex-shrink:0; stroke:var(--blue); }
+  .confidential-note-text{ color:var(--slate); font-size:13px; line-height:1.55; }
+  .confidential-note-text strong{ color:var(--ink); }
+
+  /* phone mockup */
+  .hero-phone{ display:flex; justify-content:center; }
+  .device{ position:relative; width:340px; height:700px; border-radius:46px; padding:12px; background:linear-gradient(160deg,#1e2431,#0b0e14); box-shadow:0 40px 90px -22px rgba(0,0,0,.45), 0 0 0 1px rgba(15,23,42,.06) inset; }
+  .screen{ position:relative; width:100%; height:100%; border-radius:36px; overflow:hidden; background:var(--bg); display:flex; flex-direction:column; }
+  .notch{ position:absolute; top:11px; left:50%; transform:translateX(-50%); width:104px; height:26px; background:#0c0b09; border-radius:16px; z-index:20; }
+  .p-status{ position:relative; z-index:2; display:flex; justify-content:space-between; align-items:center; padding:15px 22px 0; font-weight:600; font-size:13px; color:var(--ink); }
+  .p-hdr{ background:var(--ink); color:#fff; padding:13px 16px; display:flex; align-items:center; gap:10px; margin-top:12px; }
+  .p-hdr-mark{ width:24px; height:24px; border-radius:7px; background:var(--blue); flex-shrink:0; }
+  .p-hdr-title{ font-size:15px; font-weight:700; flex:1; }
+  .p-hdr-avatar{ width:26px; height:26px; border-radius:50%; background:var(--purple); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; }
+  .p-body{ flex:1; padding:14px 14px 20px; overflow-y:auto; }
+  .p-card{ background:var(--surface); border-radius:14px; padding:14px; box-shadow:var(--shadow); margin-bottom:12px; }
+  .p-card-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .p-card-title{ font-size:14px; font-weight:700; color:var(--ink); }
+  .p-badge{ font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; }
+  .p-badge.active{ background:var(--green-light); color:var(--green); }
+  .p-badge.paused{ background:var(--amber-light); color:var(--amber); }
+  .p-invite{ display:flex; align-items:center; justify-content:space-between; background:var(--blue-light); border:1px dashed var(--blue-mid); border-radius:10px; padding:8px 10px; margin-top:6px; }
+  .p-invite-code{ font-family:'SF Mono','Fira Mono',Consolas,monospace; font-weight:800; letter-spacing:3px; font-size:14px; color:var(--blue2); }
+  .p-invite-label{ font-size:9.5px; color:var(--slate); text-transform:uppercase; letter-spacing:.5px; }
+  .p-kanban{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:10px; }
+  .p-kcol{ background:var(--slate-light); border-radius:8px; padding:6px; }
+  .p-kcol-label{ font-size:8.5px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--slate); margin-bottom:5px; }
+  .p-ktask{ background:var(--surface); border-radius:6px; padding:5px 6px; font-size:9px; color:var(--ink3); margin-bottom:4px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+  .p-clock{ display:flex; align-items:center; justify-content:space-between; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+  .p-clock-status{ font-size:11px; color:var(--green); font-weight:700; display:flex; align-items:center; gap:5px; }
+  .p-dot{ width:6px; height:6px; border-radius:50%; background:var(--green); }
+  .p-clock-btn{ font-size:10.5px; font-weight:700; background:var(--ink); color:#fff; padding:6px 12px; border-radius:999px; }
+  .p-nav{ display:flex; border-top:1px solid var(--border); background:var(--surface); }
+  .p-nav-item{ flex:1; text-align:center; padding:10px 0 8px; font-size:9.5px; font-weight:700; color:var(--slate); }
+  .p-nav-item.active{ color:var(--blue); }
+  .home-indicator{ position:absolute; bottom:7px; left:50%; transform:translateX(-50%); width:110px; height:4px; border-radius:3px; background:var(--ink); opacity:.25; z-index:20; }
+
+  /* sections */
+  section{ padding:88px 0; }
+  .section-head{ text-align:center; max-width:640px; margin:0 auto 52px; }
+  .section-eyebrow{ color:var(--blue2); font-size:12.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; }
+  .section-head h2{ font-size:30px; color:var(--ink); font-weight:800; margin-top:10px; letter-spacing:-.5px; }
+  .section-head p{ color:var(--slate); font-size:15.5px; margin-top:12px; line-height:1.6; }
+
+  .pain-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:760px; margin:0 auto; }
+  .pain-card{ background:var(--surface); border-radius:14px; padding:26px; box-shadow:var(--shadow); border-top:3px solid var(--red); }
+  .pain-card h3{ font-size:16px; color:var(--ink); margin-bottom:8px; }
+  .pain-card p{ font-size:14px; color:var(--slate); line-height:1.55; }
+
+  .features{ background:var(--surface); }
+  .feat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .feat-card{ border:1px solid var(--border); border-radius:14px; padding:26px; transition:box-shadow .18s,transform .18s,border-color .18s; }
+  .feat-card:hover{ box-shadow:var(--shadow-pop); transform:translateY(-3px); border-color:transparent; }
+  .feat-icon{ width:44px; height:44px; border-radius:11px; background:var(--ink); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .feat-icon svg{ width:22px; height:22px; stroke:#fff; }
+  .feat-card h3{ font-size:16.5px; color:var(--ink); margin-bottom:8px; font-weight:700; }
+  .feat-card p{ font-size:14px; color:var(--slate); line-height:1.6; }
+
+  .how{ background:var(--bg); }
+  .steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .step{ background:var(--surface); border-radius:14px; padding:24px 20px; box-shadow:var(--shadow); }
+  .step-num{ width:30px; height:30px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin-bottom:14px; }
+  .step h3{ font-size:15.5px; color:var(--ink); margin-bottom:7px; }
+  .step p{ font-size:13.5px; color:var(--slate); line-height:1.55; }
+
+  .outcome{ background:var(--surface); }
+  .outcome-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .outcome-card{ text-align:center; padding:8px; }
+  .outcome-icon{ font-size:30px; margin-bottom:12px; }
+  .outcome-card h3{ font-size:15.5px; color:var(--ink); margin-bottom:8px; font-weight:700; }
+  .outcome-card p{ font-size:14px; color:var(--slate); line-height:1.6; }
+
+  .cta-band{ background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 100%); border-radius:20px; padding:52px 40px; text-align:center; }
+  .cta-band h2{ color:#fff; font-size:26px; font-weight:800; }
+  .cta-band p{ color:rgba(255,255,255,.65); font-size:15px; margin-top:10px; }
+  .btn-primary{ display:inline-flex; align-items:center; gap:8px; background:var(--blue); color:#fff; padding:12px 24px; font-size:15px; font-weight:600; border:none; border-radius:10px; text-decoration:none; margin-top:26px; }
+  .btn-primary:hover{ background:var(--blue2); }
+
+  footer{ background:var(--ink); padding:36px 0 28px; }
+  .foot-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .foot-brand{ display:flex; align-items:center; gap:10px; }
+  .foot-brand-name{ color:#fff; font-size:14px; font-weight:700; }
+  .foot-brand-sub{ color:rgba(255,255,255,.45); font-size:11.5px; }
+  .foot-links{ display:flex; gap:22px; }
+  .foot-links a{ color:rgba(255,255,255,.6); font-size:13px; text-decoration:none; }
+  .foot-links a:hover{ color:#fff; }
+
+  @media (max-width:1024px){ .hero h1{ font-size:34px; } .pain-grid,.feat-grid,.outcome-grid{ grid-template-columns:repeat(2,1fr); } .steps{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } .hero{ padding:48px 0 56px; text-align:center; } .hero p.lead,.confidential-note{ margin-left:auto; margin-right:auto; } .device{ margin-top:8px; } }
+  @media (max-width:640px){ .pain-grid,.feat-grid,.steps,.outcome-grid{ grid-template-columns:1fr; } .hero h1{ font-size:28px; } section{ padding:56px 0; } .cta-band{ padding:40px 22px; } .section-head h2{ font-size:24px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </div>
+      <span>
+        <span class="brand-name" style="display:block;">Project Organizer</span>
+        <span class="brand-sub">A Council Computing case study</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#features">What We Built</a>
+      <a class="nav-link" href="#how">How It Works</a>
+      <a class="btn-ghost" href="index.html#work">← All Projects</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Internal tool — startup toolkit</div>
+      <h1>Every group, project, and task — <span>one workspace.</span></h1>
+      <p class="lead">Council Computing built Project Organizer, a shared toolkit for small teams and startups — group workspaces with invite codes, per-project task boards, time tracking, an outreach CRM, and a resource library, all synced in real time.</p>
+      <div class="confidential-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+        <div class="confidential-note-text"><strong>Internal tool, still being built out.</strong> The screens below are illustrative mockups — no real group or account data is shown.</div>
+      </div>
+    </div>
+    <div class="hero-phone">
+      <div class="device" aria-hidden="true">
+        <div class="screen">
+          <div class="notch"></div>
+          <div class="p-status">
+            <span>9:41</span>
+            <div style="display:flex;gap:5px;align-items:center;">
+              <svg width="15" height="10" viewBox="0 0 18 11" fill="none"><rect x="0" y="7" width="3" height="4" rx="0.5" fill="currentColor"/><rect x="5" y="5" width="3" height="6" rx="0.5" fill="currentColor"/><rect x="10" y="2" width="3" height="9" rx="0.5" fill="currentColor"/><rect x="15" y="0" width="3" height="11" rx="0.5" fill="currentColor" opacity=".35"/></svg>
+            </div>
+          </div>
+          <div class="p-hdr">
+            <div class="p-hdr-mark"></div>
+            <div class="p-hdr-title">Acme Startup Co.</div>
+            <div class="p-hdr-avatar">JD</div>
+          </div>
+          <div class="p-body">
+            <div class="p-card">
+              <div class="p-card-top">
+                <span class="p-card-title">Onboarding Flow Redesign</span>
+                <span class="p-badge active">Active</span>
+              </div>
+              <div class="p-kanban">
+                <div class="p-kcol">
+                  <div class="p-kcol-label">To Do</div>
+                  <div class="p-ktask">Draft wireframes</div>
+                </div>
+                <div class="p-kcol">
+                  <div class="p-kcol-label">Doing</div>
+                  <div class="p-ktask">User interviews</div>
+                  <div class="p-ktask">Figma pass</div>
+                </div>
+                <div class="p-kcol">
+                  <div class="p-kcol-label">Done</div>
+                  <div class="p-ktask">Kickoff notes</div>
+                </div>
+              </div>
+              <div class="p-clock">
+                <span class="p-clock-status"><span class="p-dot"></span> Prompted in · 41m</span>
+                <span class="p-clock-btn">Prompt Out</span>
+              </div>
+            </div>
+            <div class="p-card">
+              <div class="p-card-top">
+                <span class="p-card-title">Invite your team</span>
+              </div>
+              <div class="p-invite">
+                <div>
+                  <div class="p-invite-label">Invite code</div>
+                  <div class="p-invite-code">7K2P9Q</div>
+                </div>
+                <span style="font-size:11px;font-weight:700;color:var(--blue2);">Share →</span>
+              </div>
+            </div>
+          </div>
+          <div class="p-nav">
+            <div class="p-nav-item active">Projects</div>
+            <div class="p-nav-item">Outreach</div>
+            <div class="p-nav-item">Resources</div>
+          </div>
+          <div class="home-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="pain">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The problem</div>
+      <h2>A startup's early tools are scattered everywhere</h2>
+      <p>Tasks in one app, notes in another, investor outreach in a spreadsheet, time tracked nowhere at all — no shared view of where a project actually stands.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <h3>No shared source of truth</h3>
+        <p>Every team member tracked their own tasks and notes their own way, so nobody had a full picture of a project's real status.</p>
+      </div>
+      <div class="pain-card">
+        <h3>Outreach fell through the cracks</h3>
+        <p>Investor and customer conversations lived in inboxes and memory, with no record of who'd been contacted or what they said.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">What we built</div>
+      <h2>A full toolkit, not just a task list</h2>
+      <p>Six pieces that work together in one shared workspace per team.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <h3>Group Workspaces</h3>
+        <p>Every team gets its own workspace behind a short invite code — no accounts to provision by hand, just share the code.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="10" rx="1"/></svg></div>
+        <h3>Task Boards &amp; Metrics</h3>
+        <p>A To Do / Doing / Done board per project, plus a lightweight metrics dashboard with hand-drawn sparklines — no charting library needed.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Prompt In / Prompt Out</h3>
+        <p>A one-tap timer clocks time against a project, so effort spent is visible without anyone filling out a timesheet.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 4v16"/></svg></div>
+        <h3>Outreach CRM</h3>
+        <p>Track investors, customers, and partners with a status pipeline — Draft, Pending, Responded — and send follow-ups straight from the app.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+        <h3>Notes &amp; Decisions Log</h3>
+        <p>A running log per project so decisions and context survive past the meeting they were made in.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></div>
+        <h3>Shared Resource Library</h3>
+        <p>Templates and tools that any group in the workspace can use, with edits restricted to the person who added them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">How it works</div>
+      <h2>From invite code to shipped project</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Create a workspace</h3>
+        <p>Start a group and get a short invite code to share with your team — no per-person setup required.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Add projects &amp; tasks</h3>
+        <p>Each project gets its own task board, notes log, and metrics dashboard, visible to the whole group.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Track time and outreach</h3>
+        <p>Prompt in when you start working, and log investor or customer conversations as they happen.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>See it all in one place</h3>
+        <p>Anyone in the group can open the workspace and see exactly where every project actually stands.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="outcome">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The outcome</div>
+      <h2>One workspace instead of five disconnected tools</h2>
+    </div>
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-icon">🧭</div>
+        <h3>One shared view</h3>
+        <p>Tasks, notes, metrics, and outreach live in the same workspace instead of scattered across apps.</p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🔗</div>
+        <h3>Zero-setup team access</h3>
+        <p>A short invite code replaces manual account provisioning for every new teammate.</p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">⏱️</div>
+        <h3>Effort made visible</h3>
+        <p>Prompt In / Prompt Out turns time tracking into a single tap instead of a spreadsheet nobody fills out.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Have a similar problem in your business?</h2>
+      <p>If your team's tools are scattered across five different apps, we can build the one that replaces them.</p>
+      <a class="btn-primary" href="mailto:councilcomputing@gmail.com?subject=Interested%20in%20a%20custom%20tool">✉ Get a Free Quote</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <div class="brand-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <span>
+          <span class="foot-brand-name" style="display:block;">Project Organizer</span>
+          <span class="foot-brand-sub">A Council Computing case study</span>
+        </span>
+      </div>
+      <div class="foot-links">
+        <a href="index.html#work">All Projects</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="mailto:councilcomputing@gmail.com">councilcomputing@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
