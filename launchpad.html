@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Launchpad — a Council Computing case study</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How Council Computing built Launchpad, a free showcase where students and young founders post their websites, apps, games, and startups.">
+<style>
+  :root{
+    --ink:#0b0b14; --ink2:#1a1430; --ink3:#2a2440;
+    --accent:#8b5cf6; --accent2:#7c3aed; --accent-light:#f5f3ff; --accent-mid:#ddd6fe; --cyan:#06b6d4;
+    --highlight:#c4b5fd;
+    --red:#7c3aed;
+    --slate:#5b5b70;
+    --surface:#fff; --bg:#f7f6fb;
+    --border:#e6e3f0; --text:#0b0b14;
+    --font: -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+    --serif: var(--font);
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(76,29,149,.07);
+    --shadow-pop:0 4px 8px rgba(0,0,0,.06),0 12px 32px rgba(76,29,149,.12);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{ font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; }
+  img,svg{ max-width:100%; display:block; }
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 32px; }
+  h1,h2,h3{ margin:0; }
+  p{ margin:0; }
+
+  /* nav */
+  .nav{ position:sticky; top:0; z-index:200; background:var(--ink); box-shadow:var(--shadow); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .brand-mark{ width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--accent),var(--cyan)); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .brand-name{ color:#fff; font-weight:700; font-size:16.5px; line-height:1.1; font-family:var(--serif); }
+  .brand-sub{ color:rgba(255,255,255,.55); font-size:10.5px; }
+  .nav-links{ display:flex; align-items:center; gap:6px; }
+  .nav-link{ color:rgba(255,255,255,.75); text-decoration:none; font-size:14px; font-weight:500; padding:9px 14px; border-radius:8px; }
+  .nav-link:hover{ background:rgba(255,255,255,.08); color:#fff; }
+  .btn-ghost{ display:inline-flex; align-items:center; gap:8px; color:#fff; padding:9px 18px; font-size:13.5px; font-weight:600; border:1px solid rgba(255,255,255,.25); border-radius:8px; text-decoration:none; }
+  .btn-ghost:hover{ background:rgba(255,255,255,.08); }
+
+  /* hero */
+  .hero{ background:radial-gradient(800px 420px at 85% -10%, rgba(139,92,246,.35), transparent 60%), radial-gradient(700px 380px at 0% 110%, rgba(6,182,212,.18), transparent 60%), var(--ink); color:#fff; padding:64px 0 88px; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; color:#ddd6fe; font-size:12.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; background:rgba(139,92,246,.15); border:1px solid rgba(139,92,246,.4); padding:6px 12px; border-radius:999px; margin-bottom:20px; }
+  .hero h1{ font-size:44px; line-height:1.1; font-weight:800; letter-spacing:-1px; color:#fff; }
+  .hero h1 span{ background:linear-gradient(90deg,#a78bfa,#22d3ee); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.lead{ color:rgba(255,255,255,.72); font-size:17px; line-height:1.65; margin-top:18px; max-width:520px; }
+  .hero-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; }
+  .note{ display:flex; align-items:center; gap:10px; margin-top:24px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:12px 16px; max-width:460px; box-shadow:var(--shadow); }
+  .note svg{ flex-shrink:0; stroke:#fbbf24; }
+  .note-text{ color:rgba(255,255,255,.7); font-size:13px; line-height:1.55; }
+  .note-text strong{ color:#fff; }
+
+  /* phone frame around a real screenshot */
+  .hero-phone{ display:flex; justify-content:center; }
+  .device{ position:relative; width:340px; height:700px; border-radius:46px; padding:12px; background:linear-gradient(160deg,#2a2440,#0b0b14); box-shadow:0 40px 90px -22px rgba(139,92,246,.55); }
+  .screen{ width:100%; height:100%; border-radius:36px; overflow:hidden; background:var(--bg); }
+  .screen img{ width:100%; height:100%; object-fit:cover; object-position:top; }
+
+  /* sections */
+  section{ padding:88px 0; }
+  .section-head{ text-align:center; max-width:640px; margin:0 auto 52px; }
+  .section-eyebrow{ color:var(--red); font-size:12.5px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; }
+  .section-head h2{ font-family:var(--serif); font-size:31px; color:var(--ink); font-weight:700; margin-top:10px; }
+  .section-head p{ color:var(--slate); font-size:15.5px; margin-top:12px; line-height:1.6; }
+
+  .pain-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:760px; margin:0 auto; }
+  .pain-card{ background:var(--surface); border-radius:14px; padding:26px; box-shadow:var(--shadow); border-top:3px solid var(--red); }
+  .pain-card h3{ font-size:16px; color:var(--ink); margin-bottom:8px; }
+  .pain-card p{ font-size:14px; color:var(--slate); line-height:1.55; }
+
+  .features{ background:var(--surface); }
+  .feat-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .feat-card{ border:1px solid var(--border); border-radius:14px; padding:26px; transition:box-shadow .18s,transform .18s; }
+  .feat-card:hover{ box-shadow:var(--shadow-pop); transform:translateY(-3px); }
+  .feat-icon{ width:44px; height:44px; border-radius:11px; background:linear-gradient(135deg,var(--accent),var(--cyan)); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .feat-icon svg{ width:22px; height:22px; stroke:#fff; }
+  .feat-card h3{ font-size:16.5px; color:var(--ink); margin-bottom:8px; }
+  .feat-card p{ font-size:14px; color:var(--slate); line-height:1.6; }
+  
+  .screens-grid{ display:flex; justify-content:center; gap:48px; flex-wrap:wrap; }
+  .screens-grid figure{ margin:0; }
+  .screens-grid figcaption{ text-align:center; color:var(--slate); font-size:13.5px; margin-top:16px; }
+
+  .how{ background:var(--surface); }
+  .steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+  .step{ background:var(--bg); border-radius:14px; padding:24px 20px; }
+  .step-num{ width:30px; height:30px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin-bottom:14px; }
+  .step h3{ font-size:15.5px; color:var(--ink); margin-bottom:7px; }
+  .step p{ font-size:13.5px; color:var(--slate); line-height:1.55; }
+
+  .outcome-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .outcome-card{ text-align:center; padding:8px; }
+  .outcome-icon{ font-size:30px; margin-bottom:12px; }
+  .outcome-card h3{ font-size:15.5px; color:var(--ink); margin-bottom:8px; }
+  .outcome-card p{ font-size:14px; color:var(--slate); line-height:1.6; }
+
+  .cta-band{ background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 100%); border-radius:20px; padding:52px 40px; text-align:center; }
+  .cta-band h2{ color:#fff; font-size:26px; font-family:var(--serif); }
+  .cta-band p{ color:rgba(255,255,255,.7); font-size:15px; margin-top:10px; }
+  .cta-actions{ display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-top:26px; }
+  .btn-primary{ display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; padding:12px 24px; font-size:15px; font-weight:600; border-radius:10px; text-decoration:none; }
+  .btn-primary:hover{ background:var(--accent2); }
+  .btn-light{ display:inline-flex; align-items:center; gap:8px; background:#fff; color:var(--ink); padding:12px 24px; font-size:15px; font-weight:700; border-radius:10px; text-decoration:none; }
+  .btn-outline{ display:inline-flex; align-items:center; gap:8px; color:#fff; padding:12px 24px; font-size:15px; font-weight:600; border:1px solid rgba(255,255,255,.3); border-radius:10px; text-decoration:none; }
+
+  footer{ background:var(--ink); padding:36px 0 28px; }
+  .foot-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .foot-brand{ display:flex; align-items:center; gap:10px; }
+  .foot-brand-name{ color:#fff; font-size:14px; font-weight:700; font-family:var(--serif); }
+  .foot-brand-sub{ color:rgba(255,255,255,.5); font-size:11.5px; }
+  .foot-links{ display:flex; gap:22px; flex-wrap:wrap; }
+  .foot-links a{ color:rgba(255,255,255,.65); font-size:13px; text-decoration:none; }
+  .foot-links a:hover{ color:#fff; }
+
+  @media (max-width:1024px){ .hero h1{ font-size:36px; } .feat-grid,.outcome-grid{ grid-template-columns:repeat(2,1fr); } .steps{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } .hero{ padding:48px 0 56px; text-align:center; } .hero p.lead,.note{ margin-left:auto; margin-right:auto; } .hero-actions{ justify-content:center; } .nav-link{ display:none; } }
+  @media (max-width:640px){ .wrap{ padding:0 18px; } .pain-grid,.feat-grid,.steps,.outcome-grid{ grid-template-columns:1fr; } .hero h1{ font-size:30px; } section{ padding:56px 0; } .cta-band{ padding:40px 22px; } .section-head h2{ font-size:25px; } .device{ width:290px; height:600px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html">
+      <div class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+      </div>
+      <span>
+        <span class="brand-name" style="display:block;">Launchpad</span>
+        <span class="brand-sub">A Council Computing case study</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#features">What We Built</a>
+      <a class="nav-link" href="#how">How It Works</a>
+      <a class="btn-ghost" href="index.html#work">← All Projects</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Our own product · In development</div>
+      <h1>A free showcase for <span>young builders.</span></h1>
+      <p class="lead">Council Computing built Launchpad, a place where students and young founders post the websites, apps, games, and startups they've made. Visitors browse a gallery, filter by category, search, and upvote their favorites, no account needed.</p>
+      <div class="note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <div class="note-text"><strong>Launching soon.</strong> The screenshots on this page are from the working build.</div>
+      </div>
+    </div>
+    <div class="hero-phone">
+      <div class="device">
+        <div class="screen"><img src="images/launchpad-project.jpg" alt="A project page on Launchpad, showing CountDracula with a Play button and an upvote button."></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="pain">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The problem</div>
+      <h2>Student projects have nowhere to be seen</h2>
+      <p>Young builders make impressive things, then share them in a group chat and they disappear.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <h3>Big launch sites bury them</h3>
+        <p>On sites built for funded startups, a student's first app competes with companies that have marketing teams, and sinks.</p>
+      </div>
+      <div class="pain-card">
+        <h3>No place to point people</h3>
+        <p>For a college application, a job, or just showing friends, there's no single page that says "here's what I built."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">What we built</div>
+      <h2>A gallery that's fun to browse and safe to run</h2>
+      <p>Quick for makers to post to, easy for visitors to explore, and moderated so it stays clean.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>Gallery, search &amp; filters</h3>
+        <p>Browse by category (games, web apps, AI tools, hardware, startups), search by project or maker, or hit "Surprise me" for a random pick.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
+        <h3>Upvotes without accounts</h3>
+        <p>Anyone can upvote once per project with no sign-up, and a "Top this week" view surfaces what's popular right now.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div>
+        <h3>Post in a minute</h3>
+        <p>Name, link, one-line pitch, a screenshot, and an optional YouTube or Loom demo video. That's it.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h3>Review before it goes live</h3>
+        <p>Every submission waits in an admin queue to be approved, rejected, or featured on the home page.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Built-in spam protection</h3>
+        <p>Rate limits, a hidden spam trap for bots, and strict checks on links, videos, and uploaded images.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+        <h3>Made to be shared</h3>
+        <p>Every project gets its own page with a rich preview, so a maker's link looks good in a text, a DM, or a post.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screens">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The real thing</div>
+      <h2>Designed for the phone in your pocket</h2>
+      <p>Built mobile-first, with smooth animations and a light and dark mode.</p>
+    </div>
+    <div class="screens-grid">
+      <figure>
+        <div class="device"><div class="screen"><img src="images/launchpad-project.jpg" alt="A Launchpad project page" loading="lazy"></div></div>
+        <figcaption>A project page</figcaption>
+      </figure>
+      <figure>
+        <div class="device"><div class="screen"><img src="images/launchpad-submit.jpg" alt="The Launchpad submit form" loading="lazy"></div></div>
+        <figcaption>Posting a project</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">How it works</div>
+      <h2>From "I made this" to the front page</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Submit</h3>
+        <p>A maker posts their project with a screenshot and a short pitch. No account required.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Get reviewed</h3>
+        <p>An admin checks it and approves it, usually within a day.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Go live</h3>
+        <p>It appears in the gallery with its own shareable page.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Get upvoted</h3>
+        <p>Visitors vote, and the best projects rise to the top or get featured.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="outcome">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">The outcome</div>
+      <h2>A community product, built to run on its own</h2>
+    </div>
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-icon">⚡</div>
+        <h3>Zero friction</h3>
+        <p>No sign-ups for makers or visitors, so posting and voting take seconds.</p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">🧹</div>
+        <h3>Stays clean</h3>
+        <p>Moderation and spam protection are built in from day one, not bolted on later.</p>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon">📣</div>
+        <h3>Makers spread the word</h3>
+        <p>Shareable project pages turn every maker into someone who brings in new visitors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Building a community or marketplace?</h2>
+      <p>We build sites where users post, vote, and share, with the moderation and protection to keep them healthy.</p>
+      <div class="cta-actions">
+        <a class="btn-light" href="mailto:councilcomputing@gmail.com?subject=Interested%20in%20a%20community%20site">✉ Get a Free Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <div class="brand-mark">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+        </div>
+        <span>
+          <span class="foot-brand-name" style="display:block;">Launchpad</span>
+          <span class="foot-brand-sub">A Council Computing case study</span>
+        </span>
+      </div>
+      <div class="foot-links">
+        <a href="index.html#work">All Projects</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="mailto:councilcomputing@gmail.com">councilcomputing@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
