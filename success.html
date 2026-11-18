@@ -43,6 +43,7 @@ body{
 .win-btn{
   background:var(--win-face);border:none;box-shadow:var(--shadow-out);
   padding:5px 20px;font-family:inherit;font-size:13px;cursor:pointer;
+  display:inline-block;text-decoration:none;color:inherit;text-align:center;
 }
 .win-btn:active{box-shadow:var(--shadow-in)}
 .win-btn.primary{background:var(--win-blue);color:#fff}
@@ -69,7 +70,7 @@ body{
   </div>
   <div class="divider" style="margin:0 28px"></div>
   <div class="actions">
-    <a href="/"><button class="win-btn primary">◀ Back to Home</button></a>
+    <a class="win-btn primary" href="/">◀ Back to Home</a>
   </div>
   <div class="statusbar">
     <span class="statusbar-cell">Done</span>
